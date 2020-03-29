@@ -1,0 +1,5 @@
+format: '{default}'
+worlds: []
+local: 100
+color: GOLD
+quick-message-command: l

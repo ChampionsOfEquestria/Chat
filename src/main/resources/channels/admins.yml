@@ -1,0 +1,6 @@
+format: '{default}'
+worlds: []
+local: 0
+color: RED
+quick-message-command: a
+muted: []

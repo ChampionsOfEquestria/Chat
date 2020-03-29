@@ -1,0 +1,47 @@
+name: CoEChat
+author: SweetieBelle
+main: town.championsofequestria.chat.ChatPlugin
+depend: [LuckPerms]
+softdepend: [Multiverse-Core]
+version: $version
+api-version: 1.15
+description: >
+            Adds Channels and PM channels.
+commands:
+    ch:
+      description: Root chat command
+      usage: /ch <command> <params>
+    ignore:
+      description: Ignores a player
+      usage: /ignore <player>
+    pm:
+      description: Ignores a player
+      usage: /pm <player>
+      aliases: [dm, msg]
+    me:
+      description: Emotes in chat
+      usage: /me <player>
+    runtests:
+      description: Runs tests
+      usage: /runtests
+permissions:
+    brohoofchat.join.*:
+      description: Allows players to join all channel
+    brohoofchat.forcejoin.*:
+      description: Forces players to join a channel
+    brohoofchat.speak.*:
+      description: Allows players to speak to all channel
+    brohoofchat.leave.*:
+      description: Allows players to leave all channel
+    brohoofchat.color.*:
+      description: Allows players to use colored chat in all channel
+    brohoofchat.emote.*:
+      description: Allows players to use colored chat in all channel
+    brohoofchat.command.ignore:
+      description: Allows players to ignore each other
+    brohoofchat.commands.kick:
+      description: Allows players to kick each other out of the channels.
+    brohoofchat.commands.mute:
+      description: Allows players to mute each other in channels.
+    brohoofchat.commands.pm:
+      description: Allows players to /pm each other.

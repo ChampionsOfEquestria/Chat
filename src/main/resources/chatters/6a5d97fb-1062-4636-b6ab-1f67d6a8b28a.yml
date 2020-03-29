@@ -1,0 +1,8 @@
+active-channel: g
+channels:
+- admins
+- g
+- local
+- sys
+- world
+ignores: []

@@ -1,0 +1,8 @@
+format: '{color}[{world}]&r <{prefix}{sender}{suffix}&r> {msg}'
+worlds:
+- factions
+- factions_nether
+- factions_the_end
+local: 0
+color: WHITE
+quick-message-command: w

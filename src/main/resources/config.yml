@@ -1,0 +1,6 @@
+default-channel: g
+format:
+  default: '{color}[{name}]&r<{prefix}{sender}{suffix}&r> {msg}'
+  announce: '{color}[{name}]&r {msg}'
+  emote: '&7[{name}] * {msg}'
+  private-message: '&d{convoaddress} {convopartner}&d: {msg}'

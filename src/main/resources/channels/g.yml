@@ -1,0 +1,5 @@
+format: '<{prefix}{sender}{suffix}&r> {msg}'
+worlds: []
+local: 0
+color: WHITE
+quick-message-command: g

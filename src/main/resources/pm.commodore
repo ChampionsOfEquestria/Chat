@@ -1,0 +1,7 @@
+pm {
+  player;
+  
+  player brigadier:string single_word {
+    message brigadier:string greedy_phrase;
+  }
+}

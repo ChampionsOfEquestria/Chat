@@ -1,0 +1,5 @@
+format: '{default}'
+worlds: []
+local: 0
+color: WHITE
+quick-message-command: sys

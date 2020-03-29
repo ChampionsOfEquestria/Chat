@@ -1,0 +1,36 @@
+ch {
+  ignore {
+    player brigadier:string single_word;
+  }
+  join {
+    channel brigadier:string single_word;
+  }
+  leave {
+    channel brigadier:string single_word;
+  }
+  who {
+    channel brigadier:string single_word;
+  }
+  kick {
+    channel brigadier:string single_word {
+      player brigadier:string single_word;
+    }
+  }
+  mute {
+    channel brigadier:string single_word {
+      player brigadier:string single_word;
+    }
+  }
+  qm {
+    channel brigadier:string single_word {
+      message brigadier:string greedy_phrase;
+    }
+  }
+  pm {
+    player brigadier:string single_word {
+      message brigadier:string greedy_phrase;
+    }
+  }
+  list;
+
+}
