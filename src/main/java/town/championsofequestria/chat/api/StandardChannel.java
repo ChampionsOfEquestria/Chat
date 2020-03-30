@@ -43,7 +43,7 @@ public class StandardChannel extends Channel {
             if (this.isLocal() && !sender.isInRange(chatter, local)) {
                 recipents.remove(chatter);
             }
-            if (isPerWorld() && chatter.isInWorld(worlds)) {
+            if (isPerWorld() && !chatter.isInWorld(worlds)) {
                 recipents.remove(chatter);
             }
             if (chatter.isIgnoring(sender)) {

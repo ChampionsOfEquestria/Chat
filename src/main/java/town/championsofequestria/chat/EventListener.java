@@ -57,7 +57,7 @@ public class EventListener implements Listener {
             event.setResult(ChatResult.NO_SUCH_CHANNEL);
             return;
         }
-        if (channel.isPerWorld() && event.getChatter().isInWorld(channel.getWorlds())) {
+        if (channel.isPerWorld() && !event.getChatter().isInWorld(channel.getWorlds())) {
             event.setResult(ChatResult.NO_SUCH_CHANNEL);
             return;
         }
@@ -115,6 +115,10 @@ public class EventListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLeaveEvent(final PlayerQuitEvent event) {
+        if (event.getPlayer() == null) {
+            ChatPlugin.getPlugin().getLogger().info("A PlayerQuitEvent was fired with the player being null!");
+            return;
+        }
         chatterManager.unloadChatter(event.getPlayer());
     }
 

@@ -208,7 +208,7 @@ public class CommandHandler implements CommandExecutor {
                                 player.sendMessage(ChatColor.LIGHT_PURPLE + "Channel not found.");
                                 return true;
                             }
-                            sender.sendMessage("/ch qm <player> <message>");
+                            sender.sendMessage("/ch qm <channel> <message>");
                             return true;
                         }
                         case "pm": {
