@@ -60,7 +60,6 @@ public class MessageHandler {
      * private void socialSpy(Chatter sender, PrivateChannel channel, String message) { for (Chatter c : chatterManager.getChatters()) { if (c.getPlayer().hasPermission("brohoofchat.socialspy")) { c.sendMessage(channel.formatPrivateLogMessage(sender, message)); } } }
      */
 
-    @SuppressWarnings("incomplete-switch")
     private boolean checkPMResult(ChatResult result, Chatter chatter) {
         switch (result) {
             case NO_PERMISSION: {
@@ -74,8 +73,13 @@ public class MessageHandler {
             case ALLOWED: {
                 return true;
             }
+            case NO_SUCH_CHANNEL: {
+                chatter.sendMessage(ChatColor.RED + "That player isn't online anymore. Use /ch <channel> to focus on another channel.");
+                return false;
+            }
         }
-        throw new IllegalStateException("Reached end of switch with an invalid result. Result was " + result);
+        chatter.sendMessage(ChatColor.RED + "An unknown state has occured.");
+        throw new IllegalStateException("End of Switch");
     }
 
     public void handle(Chatter chatter, Channel channel, String message, boolean asynchronous) {
@@ -185,6 +189,7 @@ public class MessageHandler {
                 return true;
             }
         }
-        throw new IllegalStateException("Reached end of switch with an invalid result. Result was " + result);
+        player.sendMessage(ChatColor.RED + "An unknown state has occured.");
+        throw new IllegalStateException("End of Switch");
     }
 }

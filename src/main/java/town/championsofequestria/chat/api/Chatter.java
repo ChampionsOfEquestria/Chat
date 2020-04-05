@@ -169,12 +169,12 @@ public class Chatter {
         this.lastReceivedMessageFrom = Objects.requireNonNull(c);
     }
 
-    private boolean isStillOnline() {
+    public boolean isOnline() {
         return player.isOnline();
     }
 
     public Optional<Chatter> getLastChatter() {
-        if (this.lastReceivedMessageFrom.isStillOnline())
+        if (this.lastReceivedMessageFrom.isOnline())
             return Optional.of(lastReceivedMessageFrom);
         return Optional.empty();
     }

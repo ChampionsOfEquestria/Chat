@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import town.championsofequestria.chat.api.ChatResult;
 import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.PrivateChannel;
 import town.championsofequestria.chat.api.StandardChannel;
 import town.championsofequestria.chat.api.event.ChannelChatEvent;
 import town.championsofequestria.chat.api.event.ChannelJoinEvent;
@@ -41,11 +42,16 @@ public class EventListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerPrivateMessageEvent(final ChannelPrivateMessageEvent event) {
+        PrivateChannel channel = (PrivateChannel) event.getChannel();
         if (!event.getChatter().getPlayer().hasPermission("brohoofchat.commands.pm")) {
             event.setResult(ChatResult.NO_PERMISSION);
         }
-        if (event.getChannel().isMuted(event.getChatter())) {
+        if (channel.isMuted(event.getChatter())) {
             event.setResult(ChatResult.MUTED);
+            return;
+        }
+        if(!channel.getTarget().isOnline()) {
+            event.setResult(ChatResult.NO_SUCH_CHANNEL);
             return;
         }
     }
