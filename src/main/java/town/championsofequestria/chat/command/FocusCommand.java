@@ -17,7 +17,7 @@ public class FocusCommand extends BaseCommand {
     public boolean execute(Chatter chatter, StandardChannel channel) {
         // They're already in that channel.
         if (chatter.hasChannel(channel)) {
-            if(chatter.getActiveChannel().equals(channel)) {
+            if (chatter.getActiveChannel().equals(channel)) {
                 chatter.sendMessage(ChatColor.RED + "You're already chatting in " + channel.getName());
             }
             chatter.setCurrentChannel(channel);

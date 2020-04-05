@@ -16,10 +16,7 @@ import town.championsofequestria.chat.command.DirectMessageCommand;
 import town.championsofequestria.chat.manager.ChannelManager;
 import town.championsofequestria.chat.manager.ChatterManager;
 
-
 public class DirectMessageCommandExecutor extends BaseCommandExecutor {
-    
-
 
     private DirectMessageCommand dmCommand;
 

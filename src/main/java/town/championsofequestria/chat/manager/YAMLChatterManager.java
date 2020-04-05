@@ -51,9 +51,9 @@ public class YAMLChatterManager {
         StandardChannel channel;
         if (optionalChannel.isPresent())
             channel = optionalChannel.get();
-        else if(channels.contains(settings.getDefaultChannel()))
+        else if (channels.contains(settings.getDefaultChannel()))
             channel = settings.getDefaultChannel();
-        else if(channels.size() > 0)
+        else if (channels.size() > 0)
             channel = channels.get(0);
         else
             channel = null;

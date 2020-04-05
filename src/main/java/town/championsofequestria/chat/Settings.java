@@ -56,7 +56,7 @@ public class Settings {
     public String getDefaultEmoteFormat() {
         return defaultEmote;
     }
-    
+
     public String getPrivateMessageFormat() {
         return privateMessage;
     }

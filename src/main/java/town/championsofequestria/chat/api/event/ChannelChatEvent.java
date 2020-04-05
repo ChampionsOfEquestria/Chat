@@ -24,7 +24,7 @@ public class ChannelChatEvent extends ChannelEvent {
     public HandlerList getHandlers() {
         return handlers;
     }
-    
+
     public static HandlerList getHandlerList() {
         return handlers;
     }

@@ -13,7 +13,7 @@ public class QuickMessageCommand extends BaseCommand {
     }
 
     public boolean execute(Chatter sender, StandardChannel channel, String message) {
-        if(!sender.hasChannel(channel)) {
+        if (!sender.hasChannel(channel)) {
             sender.sendMessage(ChatColor.RED + "You aren't in that channel! You need to /ch join it first.");
             return true;
         }

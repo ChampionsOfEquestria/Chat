@@ -51,7 +51,7 @@ public class ChatterManager {
         chatters.remove(chatter);
         yamlManager.save(chatter);
     }
-    
+
     public void saveChatter(Chatter chatter) {
         yamlManager.save(chatter);
     }

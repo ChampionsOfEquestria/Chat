@@ -30,8 +30,6 @@ import town.championsofequestria.chat.manager.ChatterManager;
 
 public class ChannelCommandExecutor extends BaseCommandExecutor {
 
-
-
     private DirectMessageCommand dmCommand;
     private FocusCommand focusCommand;
     private IgnoreCommand ignoreCommand;
@@ -59,7 +57,7 @@ public class ChannelCommandExecutor extends BaseCommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command,  String label,  String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Chatter player = chatterManager.getChatter((Player) sender).get();
             if (args.length != 0) {

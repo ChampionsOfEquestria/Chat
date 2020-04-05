@@ -12,10 +12,10 @@ public class ReplyCommand extends BaseCommand {
     public ReplyCommand(ChatPlugin plugin) {
         super(plugin);
     }
-    
+
     public boolean execute(Chatter sender, String message) {
         Optional<Chatter> oTarget = sender.getLastChatter();
-        if(oTarget.isPresent()) {
+        if (oTarget.isPresent()) {
             Chatter target = oTarget.get();
             plugin.getMessageHandler().handlePM(sender, target.getPrivateChannel(), message, false);
             return true;

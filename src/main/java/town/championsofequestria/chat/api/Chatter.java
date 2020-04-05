@@ -82,7 +82,7 @@ public class Chatter {
     public Player getPlayer() {
         return player;
     }
-    
+
     public UUID getUUID() {
         return player.getUniqueId();
     }
@@ -114,7 +114,7 @@ public class Chatter {
     public boolean hasPermissionToEmote(Channel channel) {
         return player.hasPermission("brohoofchat.emote." + channel.getName());
     }
-    
+
     public boolean mustForceJoin(Channel channel) {
         return player.hasPermission("brohoofchat.forcejoin." + channel.getName());
     }
@@ -164,17 +164,17 @@ public class Chatter {
         }
         return false;
     }
-    
+
     public void setLastChatter(Chatter c) {
         this.lastReceivedMessageFrom = Objects.requireNonNull(c);
     }
-   
+
     private boolean isStillOnline() {
         return player.isOnline();
     }
-    
+
     public Optional<Chatter> getLastChatter() {
-        if(this.lastReceivedMessageFrom.isStillOnline())
+        if (this.lastReceivedMessageFrom.isStillOnline())
             return Optional.of(lastReceivedMessageFrom);
         return Optional.empty();
     }

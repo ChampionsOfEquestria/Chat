@@ -13,7 +13,6 @@ import town.championsofequestria.chat.command.IgnoreCommand;
 import town.championsofequestria.chat.manager.ChannelManager;
 import town.championsofequestria.chat.manager.ChatterManager;
 
-
 public class IgnoreCommandExecutor extends BaseCommandExecutor {
 
     private IgnoreCommand ignoreCommand;
@@ -21,7 +20,6 @@ public class IgnoreCommandExecutor extends BaseCommandExecutor {
     public IgnoreCommandExecutor(ChatPlugin plugin, ChannelManager channelManager, ChatterManager chatterManager) {
         super(plugin, channelManager, chatterManager);
         this.ignoreCommand = new IgnoreCommand(plugin);
-
     }
 
     @Override

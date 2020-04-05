@@ -20,7 +20,6 @@ public class ChannelLeaveEvent extends ChannelEvent {
     public HandlerList getHandlers() {
         return handlers;
     }
-    
 
     public ChatResult getResult() {
         return result;
@@ -29,7 +28,7 @@ public class ChannelLeaveEvent extends ChannelEvent {
     public void setResult(ChatResult result) {
         this.result = result;
     }
-    
+
     public static HandlerList getHandlerList() {
         return handlers;
     }

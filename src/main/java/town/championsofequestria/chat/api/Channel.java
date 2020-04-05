@@ -19,11 +19,9 @@ public abstract class Channel {
         }
         return match.appendTail(sb).toString();
     }
-    
-    
+
     protected abstract void sendChannelMessage(ArrayList<Chatter> recipents, String message);
-    
-    
+
     protected void logChat(String message) {
         ChatPlugin.getPlugin().getDedicatedServer().console.sendMessage(message);
     }

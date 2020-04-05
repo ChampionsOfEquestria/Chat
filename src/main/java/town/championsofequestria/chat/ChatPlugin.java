@@ -78,7 +78,6 @@ public class ChatPlugin extends JavaPlugin {
         yamlChatterManager = new YAMLChatterManager(chatterFolder, channelManager, settings);
     }
 
-
     public static ChatPlugin getPlugin() {
         return plugin;
     }
@@ -95,7 +94,6 @@ public class ChatPlugin extends JavaPlugin {
     public Settings getSettings() {
         return settings;
     }
-
 
     public void logChat(String message) {
         Bukkit.getConsoleSender().sendMessage(message);

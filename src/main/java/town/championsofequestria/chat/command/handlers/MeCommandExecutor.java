@@ -13,7 +13,6 @@ import town.championsofequestria.chat.command.EmoteCommand;
 import town.championsofequestria.chat.manager.ChannelManager;
 import town.championsofequestria.chat.manager.ChatterManager;
 
-
 public class MeCommandExecutor extends BaseCommandExecutor {
 
     private EmoteCommand emoteCommand;
