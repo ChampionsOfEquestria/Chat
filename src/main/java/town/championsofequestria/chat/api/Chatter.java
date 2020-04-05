@@ -1,6 +1,8 @@
 package town.championsofequestria.chat.api;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.bukkit.World;
@@ -19,6 +21,7 @@ public class Chatter {
     private Channel activeChannel;
     private ArrayList<UUID> ignores;
     private PrivateChannel privateChannelForPlayer;
+    private Chatter lastReceivedMessageFrom;
 
     public Chatter(EntityPlayer entityPlayer, Player player, Channel activeChannel, ArrayList<StandardChannel> channels2, ArrayList<UUID> ignores) {
         this.player = player;
@@ -26,6 +29,7 @@ public class Chatter {
         this.activeChannel = activeChannel;
         this.channels = channels2;
         this.ignores = ignores;
+        lastReceivedMessageFrom = null;
         privateChannelForPlayer = new PrivateChannel(this);
     }
 
@@ -75,12 +79,12 @@ public class Chatter {
         save();
     }
 
-    public EntityPlayer getEntity() {
-        return entityPlayer;
-    }
-
     public Player getPlayer() {
         return player;
+    }
+    
+    public UUID getUUID() {
+        return player.getUniqueId();
     }
 
     public void sendMessage(String message) {
@@ -159,5 +163,19 @@ public class Chatter {
                 return true;
         }
         return false;
+    }
+    
+    public void setLastChatter(Chatter c) {
+        this.lastReceivedMessageFrom = Objects.requireNonNull(c);
+    }
+   
+    private boolean isStillOnline() {
+        return player.isOnline();
+    }
+    
+    public Optional<Chatter> getLastChatter() {
+        if(this.lastReceivedMessageFrom.isStillOnline())
+            return Optional.of(lastReceivedMessageFrom);
+        return Optional.empty();
     }
 }

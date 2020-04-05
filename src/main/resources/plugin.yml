@@ -15,15 +15,16 @@ commands:
       description: Ignores a player
       usage: /ignore <player>
     pm:
-      description: Ignores a player
-      usage: /pm <player>
-      aliases: [dm, msg]
+      description: Sends a message to a player
+      usage: /pm <player> <message>
+      aliases: [dm, msg, w, whisper, message]
+    r:
+      description: Replys to the most recent direct message
+      usage: /r <message>
+      aliases: [reply]
     me:
       description: Emotes in chat
       usage: /me <player>
-    runtests:
-      description: Runs tests
-      usage: /runtests
 permissions:
     brohoofchat.join.*:
       description: Allows players to join all channel
@@ -45,3 +46,5 @@ permissions:
       description: Allows players to mute each other in channels.
     brohoofchat.commands.pm:
       description: Allows players to /pm each other.
+    brohoofchat.socialspy:
+      description: Recieves all PM messages sent.

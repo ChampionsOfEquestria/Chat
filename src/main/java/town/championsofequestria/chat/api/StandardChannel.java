@@ -119,6 +119,14 @@ public class StandardChannel extends Channel {
         return isMuted(chatter.getPlayer().getUniqueId());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof StandardChannel)
+            if (this.name.equals(((StandardChannel) o).name))
+                return true;
+        return false;
+    }
+
     public boolean isMuted(UUID uuid) {
         return muted.contains(uuid);
     }

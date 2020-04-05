@@ -37,6 +37,7 @@ public class YAMLChatterManager {
             ArrayList<StandardChannel> channels = new ArrayList<StandardChannel>(1);
             channels.add(defaultChannel);
             Chatter c = new Chatter(entityPlayer, player, defaultChannel, channels, new ArrayList<UUID>(0));
+            defaultChannel.announceJoinMessage(c);
             save(c);
             return c;
         }
@@ -65,7 +66,7 @@ public class YAMLChatterManager {
 
     public void save(Chatter chatter) {
         try {
-            File file = new File(channelFolder, chatter.getPlayer().getUniqueId().toString() + ".yml");
+            File file = new File(channelFolder, chatter.getUUID().toString() + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             config.set("active-channel", chatter.getActiveChannel() == null ? chatter.getActiveChannel() : "NONE");
             config.set("channels", channelToString(chatter.getChannels()));

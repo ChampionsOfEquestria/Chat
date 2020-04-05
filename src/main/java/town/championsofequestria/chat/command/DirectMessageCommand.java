@@ -15,6 +15,7 @@ public class DirectMessageCommand extends BaseCommand {
     public boolean execute(Chatter sender, Chatter target, String message) {
         if(sender.equals(target)) {
             sender.sendMessage(ChatColor.GREEN + "It's weird to talk to yourself.");
+            return true;
         }
         if (ChatPlugin.isNull(message))
             return this.focus(sender, target);

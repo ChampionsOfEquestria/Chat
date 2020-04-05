@@ -53,7 +53,12 @@ public class MessageHandler {
         if (!checkPMResult(event.getResult(), chatter))
             return;
         channel.sendChatMessage(chatter, message);
+        channel.getTarget().setLastChatter(chatter);
+        // socialSpy(chatter, channel, message);
     }
+    /*
+     * private void socialSpy(Chatter sender, PrivateChannel channel, String message) { for (Chatter c : chatterManager.getChatters()) { if (c.getPlayer().hasPermission("brohoofchat.socialspy")) { c.sendMessage(channel.formatPrivateLogMessage(sender, message)); } } }
+     */
 
     @SuppressWarnings("incomplete-switch")
     private boolean checkPMResult(ChatResult result, Chatter chatter) {
@@ -98,7 +103,6 @@ public class MessageHandler {
     }
 
     public String formatMessage(StandardChannel channel, Player player, String format, String message) {
-        format = format.replace("{msg}", message);
         Matcher matcher = tagPattern.matcher(format);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
@@ -106,6 +110,7 @@ public class MessageHandler {
             matcher.appendReplacement(sb, formatTag(tag.replace("{", "").replace("}", ""), Optional.of(player), channel));
         }
         format = matcher.appendTail(sb).toString();
+        format = format.replace("{msg}", message);
         format = format.replaceAll("(?i)&([a-fklmnor0-9])", "\u00a7$1");
         return format;
     }
@@ -157,7 +162,7 @@ public class MessageHandler {
                 return player.isPresent() ? lpManager.getPrimaryGroup(player.get()) : "";
             }
             default : {
-                return  "{" + tag + "}";
+                return "{" + tag + "}";
             }
         }
     }

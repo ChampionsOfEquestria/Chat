@@ -2,13 +2,16 @@ package town.championsofequestria.chat;
 
 import java.io.File;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_15_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.minecraft.server.v1_15_R1.DedicatedServer;
 import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.command.handlers.ChannelCommandExecutor;
+import town.championsofequestria.chat.command.handlers.DirectMessageCommandExecutor;
+import town.championsofequestria.chat.command.handlers.IgnoreCommandExecutor;
+import town.championsofequestria.chat.command.handlers.MeCommandExecutor;
+import town.championsofequestria.chat.command.handlers.ReplyCommandExecutor;
 import town.championsofequestria.chat.manager.ChannelManager;
 import town.championsofequestria.chat.manager.ChatterManager;
 import town.championsofequestria.chat.manager.YAMLChannelManager;
@@ -17,7 +20,6 @@ import town.championsofequestria.chat.manager.YAMLChatterManager;
 public class ChatPlugin extends JavaPlugin {
 
     private Settings settings;
-    private CommandHandler commandHandler;
     private EventListener listener;
     private MessageHandler messageHandler;
     private YAMLChannelManager yamlChannelManager;
@@ -43,8 +45,12 @@ public class ChatPlugin extends JavaPlugin {
         chatterManager = new ChatterManager(yamlChatterManager);
         messageHandler = new MessageHandler(chatterManager);
         listener = new EventListener(messageHandler, channelManager, chatterManager);
-        commandHandler = new CommandHandler(this, channelManager, chatterManager);
         getServer().getPluginManager().registerEvents(listener, this);
+        getCommand("ch").setExecutor(new ChannelCommandExecutor(this, channelManager, chatterManager));
+        getCommand("ignore").setExecutor(new IgnoreCommandExecutor(this, channelManager, chatterManager));
+        getCommand("pm").setExecutor(new DirectMessageCommandExecutor(this, channelManager, chatterManager));
+        getCommand("r").setExecutor(new ReplyCommandExecutor(this, channelManager, chatterManager));
+        getCommand("me").setExecutor(new MeCommandExecutor(this, channelManager, chatterManager));
     }
 
     @Override
@@ -72,13 +78,6 @@ public class ChatPlugin extends JavaPlugin {
         yamlChatterManager = new YAMLChatterManager(chatterFolder, channelManager, settings);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        return commandHandler.onCommand(sender, command, label, args);
-    }
 
     public static ChatPlugin getPlugin() {
         return plugin;
@@ -97,12 +96,6 @@ public class ChatPlugin extends JavaPlugin {
         return settings;
     }
 
-    /**
-     * @return the commandHandler
-     */
-    public CommandHandler getCommandHandler() {
-        return commandHandler;
-    }
 
     public void logChat(String message) {
         Bukkit.getConsoleSender().sendMessage(message);

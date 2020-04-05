@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'town.championsofequestria'
-version = '1'
+version = '2'
 
 configurations {
     shade
@@ -30,8 +30,6 @@ dependencies {
 	compile 'com.github.MilkBowl:VaultAPI:1.7'
 	compile 'org.spigotmc:spigot:1.15.2'
 	compile 'net.luckperms:api:5.0'
-	compile fileTree(dir: 'libs', include: '*.jar')
-
 }
 
 jar {

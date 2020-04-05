@@ -27,15 +27,15 @@ public class PrivateChannel extends Channel {
         recipents.forEach((chatter) -> chatter.sendMessage(message));
     }
 
-    private String formatPrivateToMessage(String message) {
+    public String formatPrivateToMessage(String message) {
         return ChatPlugin.getPlugin().getSettings().getPrivateMessageFormat().replace("{convoaddress}", "To").replace("{convopartner}", getTargetName()).replace("{msg}", message);
     }
 
-    private String formatPrivateFromMessage(Chatter sender, String message) {
+    public String formatPrivateFromMessage(Chatter sender, String message) {
         return ChatPlugin.getPlugin().getSettings().getPrivateMessageFormat().replace("{convoaddress}", "From").replace("{convopartner}", sender.getName()).replace("{msg}", message);
     }
 
-    private String formatPrivateLogMessage(Chatter sender, String message) {
+    public String formatPrivateLogMessage(Chatter sender, String message) {
         return ChatColor.stripColor(ChatPlugin.getPlugin().getSettings().getPrivateMessageFormat().replace("{convoaddress}", sender.getName() + " ->").replace("{convopartner}", getTargetName()).replace("{msg}", message));
     }
 
