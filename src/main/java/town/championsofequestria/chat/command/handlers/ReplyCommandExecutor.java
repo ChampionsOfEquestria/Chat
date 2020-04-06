@@ -27,6 +27,7 @@ public class ReplyCommandExecutor extends BaseCommandExecutor {
             if (sender instanceof Player) {
                 return replyCommand.execute(chatterManager.getChatter((Player) sender).get(), Joiner.on(' ').join(ArrayUtils.subarray(args, 0, args.length)));
             }
+            return replyCommand.execute(ChatPlugin.consoleChatter, Joiner.on(' ').join(ArrayUtils.subarray(args, 0, args.length)));
         }
         return false;
     }

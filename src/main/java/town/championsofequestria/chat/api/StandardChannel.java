@@ -34,8 +34,9 @@ public class StandardChannel extends Channel {
      * @param message
      */
     @Override
-    public void sendChatMessage(Chatter sender, String message) {
+    public void sendChatMessage(Chatter oSender, String message) {
         ArrayList<Chatter> recipents = ChatPlugin.getPlugin().getChatterManager().getChatters();
+        StandardChatter sender = (StandardChatter) oSender;
         for (Chatter chatter : ChatPlugin.getPlugin().getChatterManager().getChatters()) {
             if (!chatter.hasChannel(this)) {
                 recipents.remove(chatter);
@@ -67,7 +68,7 @@ public class StandardChannel extends Channel {
         return ChatColor.translateAlternateColorCodes('&', ChatPlugin.getPlugin().getSettings().getDefaultAnnounceFormat().replace("{color}", this.color.toString()).replace("{name}", this.name).replace("{msg}", stripColor(message)));
     }
 
-    public void sendEmoteMessage(Chatter chatter, String message) {
+    public void sendEmoteMessage(StandardChatter chatter, String message) {
         sendChatMessage(chatter, formatEmoteMessage(chatter.getName() + " " + message));
     }
 
@@ -116,7 +117,9 @@ public class StandardChannel extends Channel {
 
     @Override
     public boolean isMuted(Chatter chatter) {
-        return isMuted(chatter.getPlayer().getUniqueId());
+        if(!(chatter instanceof StandardChatter))
+            return false;
+        return isMuted(((StandardChatter) chatter).getPlayer().getUniqueId());
     }
 
     @Override
@@ -131,19 +134,19 @@ public class StandardChannel extends Channel {
         return muted.contains(uuid);
     }
 
-    public void announceJoinMessage(Chatter chatter) {
+    public void announceJoinMessage(StandardChatter chatter) {
         this.sendAnnouncementMessage(chatter.getPlayer().getName() + " has joined the channel.");
     }
 
-    public void announceLeaveMessage(Chatter chatter) {
+    public void announceLeaveMessage(StandardChatter chatter) {
         this.sendAnnouncementMessage(chatter.getPlayer().getName() + " has left the channel.");
     }
 
-    public void removeMuted(Chatter target) {
+    public void removeMuted(StandardChatter target) {
         muted.remove(target.getPlayer().getUniqueId());
     }
 
-    public void addMuted(Chatter target) {
+    public void addMuted(StandardChatter target) {
         muted.add(target.getPlayer().getUniqueId());
     }
 

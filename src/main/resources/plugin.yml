@@ -10,7 +10,7 @@ description: >
 commands:
     ch:
       description: Root chat command
-      usage: /ch <command> <params>
+      usage: /ch <subcommand> <params>
     ignore:
       description: Ignores a player
       usage: /ignore <player>

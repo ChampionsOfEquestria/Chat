@@ -3,7 +3,7 @@ package town.championsofequestria.chat.command;
 import org.bukkit.ChatColor;
 
 import town.championsofequestria.chat.ChatPlugin;
-import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.api.StandardChannel;
 
 public class LeaveCommand extends BaseCommand {
@@ -12,7 +12,7 @@ public class LeaveCommand extends BaseCommand {
         super(plugin);
     }
 
-    public boolean execute(Chatter chatter, StandardChannel channel) {
+    public boolean execute(StandardChatter chatter, StandardChannel channel) {
         if (!chatter.hasChannel(channel)) {
             chatter.sendMessage(ChatColor.RED + "You aren't in " + channel.getName());
             return true;

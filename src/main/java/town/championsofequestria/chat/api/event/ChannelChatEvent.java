@@ -3,7 +3,7 @@ package town.championsofequestria.chat.api.event;
 import org.bukkit.event.HandlerList;
 
 import town.championsofequestria.chat.api.ChatResult;
-import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.api.StandardChannel;
 
 public class ChannelChatEvent extends ChannelEvent {
@@ -13,7 +13,7 @@ public class ChannelChatEvent extends ChannelEvent {
     private String message;
     private String format;
 
-    public ChannelChatEvent(Chatter sender, StandardChannel channel, ChatResult result, String message, String channelFormat, boolean async) {
+    public ChannelChatEvent(StandardChatter sender, StandardChannel channel, ChatResult result, String message, String channelFormat, boolean async) {
         super(sender, channel, async);
         this.result = result;
         this.message = message;

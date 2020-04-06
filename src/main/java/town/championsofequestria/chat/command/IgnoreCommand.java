@@ -1,7 +1,7 @@
 package town.championsofequestria.chat.command;
 
 import town.championsofequestria.chat.ChatPlugin;
-import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 
 public class IgnoreCommand extends BaseCommand {
 
@@ -9,7 +9,7 @@ public class IgnoreCommand extends BaseCommand {
         super(plugin);
     }
 
-    public boolean execute(Chatter chatter, Chatter target) {
+    public boolean execute(StandardChatter chatter, StandardChatter target) {
         if (chatter.isIgnoring(target)) {
             // Remove from the list
             chatter.removeIgnore(target);

@@ -17,22 +17,14 @@ public class DirectMessageCommand extends BaseCommand {
             sender.sendMessage(ChatColor.GREEN + "It's weird to talk to yourself.");
             return true;
         }
-        if (ChatPlugin.isNull(message))
-            return this.focus(sender, target);
-        if (sender.getActiveChannel() instanceof PrivateChannel) {
-            if (((PrivateChannel) sender.getActiveChannel()).getTarget().equals(target)) {
-                // Already talking to them.
-                plugin.getMessageHandler().handlePM(sender, ((PrivateChannel) sender.getActiveChannel()), message, false);
-                return true;
-            }
-        }
         plugin.getMessageHandler().handlePM(sender, target.getPrivateChannel(), message, false);
         return true;
     }
 
     public boolean focus(Chatter sender, Chatter target) {
         if (sender.getActiveChannel() instanceof PrivateChannel) {
-            if (((PrivateChannel) sender.getActiveChannel()).getTarget().equals(target)) {
+            PrivateChannel channel = (PrivateChannel) sender.getActiveChannel();
+            if (channel.getTarget().equals(target)) {
                 sender.sendMessage(ChatColor.RED + "You are already talking to this person.");
                 return true;
             }

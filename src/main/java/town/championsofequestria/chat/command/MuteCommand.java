@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import town.championsofequestria.chat.ChatPlugin;
-import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.api.StandardChannel;
 
 public class MuteCommand extends BaseCommand {
@@ -13,7 +13,7 @@ public class MuteCommand extends BaseCommand {
         super(plugin);
     }
 
-    public boolean execute(CommandSender sender, Chatter target, StandardChannel channel) {
+    public boolean execute(CommandSender sender, StandardChatter target, StandardChannel channel) {
         if (sender.hasPermission("brohoofchat.commands.mute")) {
             if (channel.isMuted(target)) {
                 channel.removeMuted(target);

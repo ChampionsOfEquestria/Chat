@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import town.championsofequestria.chat.ChatPlugin;
-import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.command.IgnoreCommand;
 import town.championsofequestria.chat.manager.ChannelManager;
 import town.championsofequestria.chat.manager.ChatterManager;
@@ -29,7 +29,7 @@ public class IgnoreCommandExecutor extends BaseCommandExecutor {
             return true;
         }
         if (args.length > 0) {
-            Optional<Chatter> target = chatterManager.getChatter(args[0]);
+            Optional<StandardChatter> target = chatterManager.getChatter(args[0]);
             if (target.isPresent()) {
                 return ignoreCommand.execute(chatterManager.getChatter((Player) sender).get(), target.get());
             }

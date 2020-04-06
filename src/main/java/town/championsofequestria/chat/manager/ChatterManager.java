@@ -9,12 +9,13 @@ import org.bukkit.entity.Player;
 
 import net.minecraft.server.v1_15_R1.EntityPlayer;
 import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 
 public class ChatterManager {
 
     private YAMLChatterManager yamlManager;
-    private HashMap<Player, Chatter> chattersMap = new HashMap<Player, Chatter>(0);
-    private ArrayList<Chatter> chatters = new ArrayList<Chatter>(0);
+    private HashMap<Player, StandardChatter> chattersMap = new HashMap<Player, StandardChatter>(0);
+    private ArrayList<StandardChatter> chatters = new ArrayList<StandardChatter>(0);
 
     public ChatterManager(YAMLChatterManager yamlManager) {
         this.yamlManager = Objects.requireNonNull(yamlManager);
@@ -27,19 +28,19 @@ public class ChatterManager {
      * @param ply
      *            the player to load
      */
-    public Chatter loadChatter(Player player, EntityPlayer entityPlayer) {
-        Chatter chatter = yamlManager.load(player, entityPlayer);
+    public StandardChatter loadChatter(Player player, EntityPlayer entityPlayer) {
+        StandardChatter chatter = yamlManager.load(player, entityPlayer);
         chattersMap.put(player, chatter);
         chatters.add(chatter);
         return chatter;
     }
 
-    public Optional<Chatter> getChatter(Player player) {
+    public Optional<StandardChatter> getChatter(Player player) {
         return Optional.ofNullable(chattersMap.get(player));
     }
 
-    public Optional<Chatter> getChatter(String player) {
-        for (Chatter chatter : chatters) {
+    public Optional<StandardChatter> getChatter(String player) {
+        for (StandardChatter chatter : chatters) {
             if (chatter.getPlayer().getName().equalsIgnoreCase(player))
                 return Optional.of(chatter);
         }
@@ -47,12 +48,12 @@ public class ChatterManager {
     }
 
     public void unloadChatter(Player player) {
-        Chatter chatter = chattersMap.remove(player);
+        StandardChatter chatter = chattersMap.remove(player);
         chatters.remove(chatter);
         yamlManager.save(chatter);
     }
 
-    public void saveChatter(Chatter chatter) {
+    public void saveChatter(StandardChatter chatter) {
         yamlManager.save(chatter);
     }
 

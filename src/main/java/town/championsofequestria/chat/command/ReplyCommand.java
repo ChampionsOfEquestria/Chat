@@ -13,14 +13,14 @@ public class ReplyCommand extends BaseCommand {
         super(plugin);
     }
 
-    public boolean execute(Chatter sender, String message) {
-        Optional<Chatter> oTarget = sender.getLastChatter();
+    public boolean execute(Chatter chatter, String message) {
+        Optional<Chatter> oTarget = chatter.getLastChatter();
         if (oTarget.isPresent()) {
             Chatter target = oTarget.get();
-            plugin.getMessageHandler().handlePM(sender, target.getPrivateChannel(), message, false);
+            plugin.getMessageHandler().handlePM(chatter, target.getPrivateChannel(), message, false);
             return true;
         }
-        sender.sendMessage(ChatColor.LIGHT_PURPLE + "No one has messaged you recently.");
+        chatter.sendMessage(ChatColor.LIGHT_PURPLE + "No one has messaged you recently.");
         return true;
     }
 }

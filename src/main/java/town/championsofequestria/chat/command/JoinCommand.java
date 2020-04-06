@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import town.championsofequestria.chat.ChatPlugin;
-import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.api.StandardChannel;
 import town.championsofequestria.chat.api.event.ChannelJoinEvent;
 
@@ -14,7 +14,7 @@ public class JoinCommand extends BaseCommand {
         super(plugin);
     }
 
-    public boolean execute(Chatter chatter, StandardChannel channel) {
+    public boolean execute(StandardChatter chatter, StandardChannel channel) {
         ChannelJoinEvent event = new ChannelJoinEvent(chatter, channel, false);
         Bukkit.getPluginManager().callEvent(event);
         switch (event.getResult()) {

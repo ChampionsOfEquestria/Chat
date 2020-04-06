@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 import town.championsofequestria.chat.ChatPlugin;
-import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.api.StandardChannel;
 
 public class ListCommand extends BaseCommand {
@@ -21,7 +21,7 @@ public class ListCommand extends BaseCommand {
         return true;
     }
 
-    public boolean execute(Chatter sender) {
+    public boolean execute(StandardChatter sender) {
         sender.sendMessage(ChatColor.YELLOW + "Here are the channels you can join.");
         for (StandardChannel c : channelManager.getChannels()) {
             if (sender.hasChannel(c))

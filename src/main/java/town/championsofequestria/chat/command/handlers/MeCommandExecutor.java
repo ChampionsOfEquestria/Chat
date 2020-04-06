@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import com.google.common.base.Joiner;
 
 import town.championsofequestria.chat.ChatPlugin;
-import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.command.EmoteCommand;
 import town.championsofequestria.chat.manager.ChannelManager;
 import town.championsofequestria.chat.manager.ChatterManager;
@@ -24,7 +24,7 @@ public class MeCommandExecutor extends BaseCommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Chatter chatter = chatterManager.getChatter((Player) sender).get();
+        StandardChatter chatter = chatterManager.getChatter((Player) sender).get();
         if (args.length > 0) {
             return emoteCommand.execute(chatter, Joiner.on(' ').join(ArrayUtils.subarray(args, 0, args.length)));
         }

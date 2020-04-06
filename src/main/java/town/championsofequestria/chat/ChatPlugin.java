@@ -7,6 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.minecraft.server.v1_15_R1.DedicatedServer;
 import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.ConsoleChatter;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.command.handlers.ChannelCommandExecutor;
 import town.championsofequestria.chat.command.handlers.DirectMessageCommandExecutor;
 import town.championsofequestria.chat.command.handlers.IgnoreCommandExecutor;
@@ -29,6 +31,7 @@ public class ChatPlugin extends JavaPlugin {
     private YAMLChatterManager yamlChatterManager;
     private Brigadier brigadier;
     private static ChatPlugin plugin;
+    public static final ConsoleChatter consoleChatter = new ConsoleChatter();
 
     /**
      * {@inheritDoc}
@@ -56,7 +59,7 @@ public class ChatPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         for (Chatter c : chatterManager.getChatters())
-            yamlChatterManager.save(c);
+            yamlChatterManager.save((StandardChatter) c);
     }
 
     private void registerCommands() {

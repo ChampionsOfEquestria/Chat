@@ -12,10 +12,9 @@ import org.bukkit.entity.Player;
 import com.google.common.base.Joiner;
 
 import town.championsofequestria.chat.ChatPlugin;
-import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.api.StandardChannel;
 import town.championsofequestria.chat.command.DirectMessageCommand;
-import town.championsofequestria.chat.command.EmoteCommand;
 import town.championsofequestria.chat.command.FocusCommand;
 import town.championsofequestria.chat.command.IgnoreCommand;
 import town.championsofequestria.chat.command.JoinCommand;
@@ -44,7 +43,6 @@ public class ChannelCommandExecutor extends BaseCommandExecutor {
     public ChannelCommandExecutor(ChatPlugin plugin, ChannelManager channelManager, ChatterManager chatterManager) {
         super(plugin, channelManager, chatterManager);
         this.dmCommand = new DirectMessageCommand(plugin);
-        new EmoteCommand(plugin);
         this.ignoreCommand = new IgnoreCommand(plugin);
         this.joinCommand = new JoinCommand(plugin);
         this.kickCommand = new KickCommand(plugin);
@@ -59,12 +57,12 @@ public class ChannelCommandExecutor extends BaseCommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            Chatter player = chatterManager.getChatter((Player) sender).get();
+            StandardChatter player = chatterManager.getChatter((Player) sender).get();
             if (args.length != 0) {
                 switch (args[0].toLowerCase()) {
                     case "ignore": {
                         if (args.length > 1) {
-                            Optional<Chatter> target = chatterManager.getChatter(args[1]);
+                            Optional<StandardChatter> target = chatterManager.getChatter(args[1]);
                             if (target.isPresent()) {
                                 return ignoreCommand.execute(player, target.get());
                             }
@@ -117,7 +115,7 @@ public class ChannelCommandExecutor extends BaseCommandExecutor {
                         if (args.length == 3) {
                             Optional<StandardChannel> channel = channelManager.getChannel(args[1]);
                             if (channel.isPresent()) {
-                                Optional<Chatter> target = chatterManager.getChatter(args[2]);
+                                Optional<StandardChatter> target = chatterManager.getChatter(args[2]);
                                 if (target.isPresent()) {
                                     return kickCommand.execute(sender, target.get(), channel.get());
                                 }
@@ -134,7 +132,7 @@ public class ChannelCommandExecutor extends BaseCommandExecutor {
                         if (args.length == 3) {
                             Optional<StandardChannel> channel = channelManager.getChannel(args[1]);
                             if (channel.isPresent()) {
-                                Optional<Chatter> target = chatterManager.getChatter(args[2]);
+                                Optional<StandardChatter> target = chatterManager.getChatter(args[2]);
                                 if (target.isPresent()) {
                                     return muteCommand.execute(sender, target.get(), channel.get());
                                 }
@@ -161,7 +159,7 @@ public class ChannelCommandExecutor extends BaseCommandExecutor {
                     }
                     case "pm": {
                         if (args.length == 2) {
-                            Optional<Chatter> target = chatterManager.getChatter(args[1]);
+                            Optional<StandardChatter> target = chatterManager.getChatter(args[1]);
                             if (target.isPresent()) {
                                 return dmCommand.focus(player, target.get());
                             }
@@ -169,7 +167,7 @@ public class ChannelCommandExecutor extends BaseCommandExecutor {
                             return true;
                         }
                         if (args.length > 2) {
-                            Optional<Chatter> target = chatterManager.getChatter(args[1]);
+                            Optional<StandardChatter> target = chatterManager.getChatter(args[1]);
                             if (target.isPresent()) {
                                 return dmCommand.execute(player, target.get(), Joiner.on(' ').join(ArrayUtils.subarray(args, 2, args.length)));
                             }
@@ -195,7 +193,7 @@ public class ChannelCommandExecutor extends BaseCommandExecutor {
                         if (args.length == 2) {
                             Optional<StandardChannel> channel = channelManager.getChannel(args[1]);
                             if (channel.isPresent()) {
-                                Optional<Chatter> target = chatterManager.getChatter(args[2]);
+                                Optional<StandardChatter> target = chatterManager.getChatter(args[2]);
                                 if (target.isPresent()) {
                                     return kickCommand.execute(ccs, target.get(), channel.get());
                                 }
@@ -212,7 +210,7 @@ public class ChannelCommandExecutor extends BaseCommandExecutor {
                         if (args.length == 2) {
                             Optional<StandardChannel> channel = channelManager.getChannel(args[1]);
                             if (channel.isPresent()) {
-                                Optional<Chatter> target = chatterManager.getChatter(args[2]);
+                                Optional<StandardChatter> target = chatterManager.getChatter(args[2]);
                                 if (target.isPresent()) {
                                     return muteCommand.execute(ccs, target.get(), channel.get());
                                 }

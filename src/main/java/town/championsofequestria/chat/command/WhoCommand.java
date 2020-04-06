@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import town.championsofequestria.chat.ChatPlugin;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.api.Chatter;
 import town.championsofequestria.chat.api.StandardChannel;
 
@@ -24,7 +25,7 @@ public class WhoCommand extends BaseCommand {
         return true;
     }
 
-    public boolean execute(Chatter chatter, StandardChannel channel) {
+    public boolean execute(StandardChatter chatter, StandardChannel channel) {
         if (chatter.hasPermissionToJoin(channel)) {
             StringBuilder builder = new StringBuilder();
             builder.append(channel.getColor() + channel.getName() + ChatColor.RESET + ": ");

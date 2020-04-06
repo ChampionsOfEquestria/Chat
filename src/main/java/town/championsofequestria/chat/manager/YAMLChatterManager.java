@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 import net.minecraft.server.v1_15_R1.EntityPlayer;
 import town.championsofequestria.chat.Settings;
-import town.championsofequestria.chat.api.Chatter;
+import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.api.StandardChannel;
 
 public class YAMLChatterManager {
@@ -29,14 +29,14 @@ public class YAMLChatterManager {
         this.settings = Objects.requireNonNull(settings);
     }
 
-    public Chatter load(Player player, EntityPlayer entityPlayer) {
+    public StandardChatter load(Player player, EntityPlayer entityPlayer) {
         Optional<YamlConfiguration> oConfig = getConfig(new File(channelFolder, player.getUniqueId().toString() + ".yml"));
         if (!oConfig.isPresent()) {
             // The player does not already have an existing config. Let's make a new one.
             StandardChannel defaultChannel = settings.getDefaultChannel();
             ArrayList<StandardChannel> channels = new ArrayList<StandardChannel>(1);
             channels.add(defaultChannel);
-            Chatter c = new Chatter(entityPlayer, player, defaultChannel, channels, new ArrayList<UUID>(0));
+            StandardChatter c = new StandardChatter(entityPlayer, player, defaultChannel, channels, new ArrayList<UUID>(0));
             defaultChannel.announceJoinMessage(c);
             save(c);
             return c;
@@ -61,10 +61,10 @@ public class YAMLChatterManager {
         ArrayList<UUID> ignores = new ArrayList<UUID>(uuidStrings.size());
         for (String uuid : uuidStrings)
             ignores.add(UUID.fromString(uuid));
-        return new Chatter(entityPlayer, player, channel, channels, ignores);
+        return new StandardChatter(entityPlayer, player, channel, channels, ignores);
     }
 
-    public void save(Chatter chatter) {
+    public void save(StandardChatter chatter) {
         try {
             File file = new File(channelFolder, chatter.getUUID().toString() + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
