@@ -14,10 +14,6 @@ public class ChannelManager {
         this.channels = Objects.requireNonNull(channels);
     }
 
-    public boolean hasChannel(StandardChannel channel) {
-        return channels.contains(channel);
-    }
-
     public Optional<StandardChannel> getChannel(String name) {
         for (StandardChannel channel : channels) {
             if (channel.getName().equalsIgnoreCase(name))
@@ -36,5 +32,9 @@ public class ChannelManager {
 
     public ArrayList<StandardChannel> getChannels() {
         return channels;
+    }
+
+    public boolean hasChannel(StandardChannel channel) {
+        return channels.contains(channel);
     }
 }

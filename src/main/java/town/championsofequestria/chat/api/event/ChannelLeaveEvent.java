@@ -9,6 +9,11 @@ import town.championsofequestria.chat.api.StandardChannel;
 public class ChannelLeaveEvent extends ChannelEvent {
 
     private static final HandlerList handlers = new HandlerList();
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     private ChatResult result;
 
     public ChannelLeaveEvent(StandardChatter chatter, StandardChannel channel, boolean async) {
@@ -27,9 +32,5 @@ public class ChannelLeaveEvent extends ChannelEvent {
 
     public void setResult(ChatResult result) {
         this.result = result;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 }

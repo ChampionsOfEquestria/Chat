@@ -9,8 +9,13 @@ import town.championsofequestria.chat.api.PrivateChannel;
 public class ChannelPrivateMessageEvent extends ChannelEvent {
 
     private static final HandlerList handlers = new HandlerList();
-    private ChatResult result;
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     private String message;
+    private ChatResult result;
 
     public ChannelPrivateMessageEvent(Chatter sender, PrivateChannel channel, ChatResult result, String message, boolean async) {
         super(sender, channel, async);
@@ -23,20 +28,16 @@ public class ChannelPrivateMessageEvent extends ChannelEvent {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public ChatResult getResult() {
         return result;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public void setResult(ChatResult result) {

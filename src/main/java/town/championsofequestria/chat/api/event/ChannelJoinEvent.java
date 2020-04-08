@@ -9,6 +9,11 @@ import town.championsofequestria.chat.api.StandardChannel;
 public class ChannelJoinEvent extends ChannelEvent {
 
     private static final HandlerList handlers = new HandlerList();
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     private ChatResult result;
 
     public ChannelJoinEvent(StandardChatter chatter, StandardChannel channel, boolean async) {
@@ -18,10 +23,6 @@ public class ChannelJoinEvent extends ChannelEvent {
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 

@@ -11,38 +11,11 @@ public class ConsoleChatter extends Chatter {
     private ConsoleCommandSender sender = Bukkit.getConsoleSender();
 
     @Override
-    public void sendMessage(String message) {
-        sender.sendMessage(message);
+    public void addChannel(StandardChannel channel) {
     }
 
     @Override
-    public boolean isOnline() {
-        return true;
-    }
-
-    @Override
-    public String getName() {
-        return "@Console";
-    }
-
-    @Override
-    public boolean isIgnoring(Chatter chatter) {
-        return false;
-    }
-
-    @Override
-    public boolean hasChannel(StandardChannel standardChannel) {
-        return true;
-    }
-
-    @Override
-    public boolean isInWorld(ArrayList<World> worlds) {
-        return true;
-    }
-
-    @Override
-    public void setLastChatter(Chatter chatter) {
-        this.lastReceivedMessageFrom = chatter;
+    public void addIgnore(StandardChatter target) {
     }
 
     @Override
@@ -53,31 +26,17 @@ public class ConsoleChatter extends Chatter {
     }
 
     @Override
-    public void setCurrentChannel(Channel privateChannel) {
-        if (privateChannel instanceof PrivateChannel) {
-            this.lastReceivedMessageFrom = ((PrivateChannel) privateChannel).getTarget();
-            return;
-        }
+    public ArrayList<StandardChannel> getChannels() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean hasPermissionToPM() {
-        return true;
+    public String getName() {
+        return "@Console";
     }
 
     @Override
-    public boolean hasPermissionToJoin(Channel channel) {
-        return true;
-    }
-
-    @Override
-    public boolean hasPermissionToSpeak(Channel channel) {
-        return true;
-    }
-
-    @Override
-    public boolean hasPermissionToLeave(Channel channel) {
+    public boolean hasChannel(StandardChannel standardChannel) {
         return true;
     }
 
@@ -92,8 +51,18 @@ public class ConsoleChatter extends Chatter {
     }
 
     @Override
-    public boolean mustForceJoin(Channel channel) {
-        return false;
+    public boolean hasPermissionToJoin(Channel channel) {
+        return true;
+    }
+
+    @Override
+    public boolean hasPermissionToLeave(Channel channel) {
+        return true;
+    }
+
+    @Override
+    public boolean hasPermissionToPM() {
+        return true;
     }
 
     @Override
@@ -102,32 +71,59 @@ public class ConsoleChatter extends Chatter {
     }
 
     @Override
-    public void addIgnore(StandardChatter target) {
+    public boolean hasPermissionToSpeak(Channel channel) {
+        return true;
     }
 
     @Override
-    public void removeIgnore(StandardChatter target) {
-        
-    }
-
-    @Override
-    public ArrayList<StandardChannel> getChannels() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void addChannel(StandardChannel channel) {
-
-        
-    }
-
-    @Override
-    public void removeChannel(StandardChannel channel) {
-        
+    public boolean isIgnoring(Chatter chatter) {
+        return false;
     }
 
     @Override
     public boolean isInRange(Chatter chatter, int distance) {
         return true;
+    }
+
+    @Override
+    public boolean isInWorld(ArrayList<World> worlds) {
+        return true;
+    }
+
+    @Override
+    public boolean isOnline() {
+        return true;
+    }
+
+    @Override
+    public boolean mustForceJoin(Channel channel) {
+        return false;
+    }
+
+    @Override
+    public void removeChannel(StandardChannel channel) {
+    }
+
+    @Override
+    public void removeIgnore(StandardChatter target) {
+    }
+
+    @Override
+    public void sendMessage(String message) {
+        sender.sendMessage(message);
+    }
+
+    @Override
+    public void setCurrentChannel(Channel privateChannel) {
+        if (privateChannel instanceof PrivateChannel) {
+            this.lastReceivedMessageFrom = ((PrivateChannel) privateChannel).getTarget();
+            return;
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setLastChatter(Chatter chatter) {
+        this.lastReceivedMessageFrom = chatter;
     }
 }

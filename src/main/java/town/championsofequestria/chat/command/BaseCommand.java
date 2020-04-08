@@ -6,9 +6,9 @@ import town.championsofequestria.chat.manager.ChatterManager;
 
 public abstract class BaseCommand {
 
-    protected ChatPlugin plugin;
-    protected ChatterManager chatterManager;
     protected ChannelManager channelManager;
+    protected ChatterManager chatterManager;
+    protected ChatPlugin plugin;
 
     public BaseCommand(ChatPlugin plugin) {
         this.plugin = plugin;

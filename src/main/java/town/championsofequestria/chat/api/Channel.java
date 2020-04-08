@@ -8,6 +8,18 @@ import town.championsofequestria.chat.ChatPlugin;
 
 public abstract class Channel {
 
+    public abstract String getName();
+
+    public abstract String getQuickMessageCommand();
+
+    public abstract boolean isMuted(Chatter chatter);
+
+    protected void logChat(String message) {
+        ChatPlugin.getPlugin().getDedicatedServer().console.sendMessage(message);
+    }
+
+    protected abstract void sendChannelMessage(ArrayList<Chatter> recipents, String message);
+
     public abstract void sendChatMessage(Chatter sender, String message);
 
     protected String stripColor(String message) {
@@ -19,16 +31,4 @@ public abstract class Channel {
         }
         return match.appendTail(sb).toString();
     }
-
-    protected abstract void sendChannelMessage(ArrayList<Chatter> recipents, String message);
-
-    protected void logChat(String message) {
-        ChatPlugin.getPlugin().getDedicatedServer().console.sendMessage(message);
-    }
-
-    public abstract String getName();
-
-    public abstract String getQuickMessageCommand();
-
-    public abstract boolean isMuted(Chatter chatter);
 }

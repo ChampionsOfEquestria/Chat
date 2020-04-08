@@ -31,39 +31,26 @@ public class MessageHandler {
         this.lpManager = new LuckPermsManager();
     }
 
-    /**
-     * Sends a chat message with the player's default channel being the destination
-     * 
-     * @param player
-     * @param message
-     * @param asynchronous
-     */
-    public void handle(Player player, String message, boolean asynchronous) {
-        Optional<StandardChatter> chatter = chatterManager.getChatter(player);
-        if (chatter.isPresent())
-            handle(chatter.get(), chatter.get().getActiveChannel(), message, asynchronous);
-        else
-            player.sendMessage("Please wait until you are fully logged in to chat.");
-    }
-
-    public void handlePM(Chatter sender, PrivateChannel channel, String message, boolean asynchronous) {
-        if (ChatPlugin.isNull(message))
-            return;
-        ChannelPrivateMessageEvent event = new ChannelPrivateMessageEvent(sender, channel, ChatResult.ALLOWED, message, asynchronous);
-        Bukkit.getPluginManager().callEvent(event);
-        if (!checkPMResult(event.getResult(), sender))
-            return;
-        channel.sendChatMessage(sender, message);
-        channel.getTarget().setLastChatter(sender);
-        socialSpy(sender, channel, message);
-    }
-
-    private void socialSpy(Chatter sender, PrivateChannel channel, String message) {
-        for (Chatter c : chatterManager.getChatters()) {
-            if (c.hasPermissionToSocialSpy()) {
-                c.sendMessage(channel.formatPrivateLogMessage(sender, message));
+    private boolean checkEventResult(ChatResult result, StandardChatter player, StandardChannel channel) {
+        switch (result) {
+            case NO_PERMISSION: {
+                player.sendMessage(ChatColor.RED + "You don't have permission to chat in " + channel.getName());
+                return false;
+            }
+            case NO_SUCH_CHANNEL: {
+                player.sendMessage(ChatColor.RED + "You cannot speak in " + channel.getName() + " at this time.");
+                return false;
+            }
+            case MUTED: {
+                player.sendMessage(ChatColor.RED + "You were muted from this channel!");
+                return false;
+            }
+            case ALLOWED: {
+                return true;
             }
         }
+        player.sendMessage(ChatColor.RED + "An unknown state has occured.");
+        throw new IllegalStateException("End of Switch");
     }
 
     private boolean checkPMResult(ChatResult result, Chatter sender) {
@@ -88,30 +75,6 @@ public class MessageHandler {
         throw new IllegalStateException("End of Switch");
     }
 
-    public void handle(StandardChatter chatter, Channel channel, String message, boolean asynchronous) {
-        if (channel == null) {
-            chatter.sendMessage(ChatColor.LIGHT_PURPLE + "You aren't currently focused in a channel.");
-            return;
-        }
-        if (channel instanceof PrivateChannel)
-            handlePM(chatter, (PrivateChannel) channel, message, asynchronous);
-        else
-            handleChat(chatter, (StandardChannel) channel, message, asynchronous);
-    }
-
-    public void handleChat(StandardChatter chatter, StandardChannel channel, String message, boolean asynchronous) {
-        if (ChatPlugin.isNull(message))
-            return;
-        ChannelChatEvent event = new ChannelChatEvent(chatter, channel, ChatResult.ALLOWED, message, channel.getFormat(), asynchronous);
-        Bukkit.getPluginManager().callEvent(event);
-        if (!checkEventResult(event.getResult(), chatter, channel))
-            return;
-        message = event.getMessage();
-        message = getOrStripColor(chatter, channel, message);
-        message = formatMessage(channel, chatter.getPlayer(), event.getFormat(), message);
-        channel.sendChatMessage(chatter, message);
-    }
-
     public String formatMessage(StandardChannel channel, Player player, String format, String message) {
         Matcher matcher = tagPattern.matcher(format);
         StringBuffer sb = new StringBuffer();
@@ -123,20 +86,6 @@ public class MessageHandler {
         format = format.replace("{msg}", message);
         format = format.replaceAll("(?i)&([a-fklmnor0-9])", "\u00a7$1");
         return format;
-    }
-
-    public String getOrStripColor(StandardChatter sender, StandardChannel channel, String message) {
-        Pattern pattern = Pattern.compile("(?i)(&)([0-9a-fk-or])");
-        Matcher match = pattern.matcher(message);
-        StringBuffer sb = new StringBuffer();
-        while (match.find()) {
-            if (sender.hasPermissionToColor(channel)) {
-                match.appendReplacement(sb, ChatColor.getByChar(match.group(2).toLowerCase()).toString());
-            } else {
-                match.appendReplacement(sb, "");
-            }
-        }
-        return match.appendTail(sb).toString();
     }
 
     private String formatTag(String tag, Optional<Player> player, StandardChannel channel) {
@@ -177,25 +126,76 @@ public class MessageHandler {
         }
     }
 
-    private boolean checkEventResult(ChatResult result, StandardChatter player, StandardChannel channel) {
-        switch (result) {
-            case NO_PERMISSION: {
-                player.sendMessage(ChatColor.RED + "You don't have permission to chat in " + channel.getName());
-                return false;
-            }
-            case NO_SUCH_CHANNEL: {
-                player.sendMessage(ChatColor.RED + "You cannot speak in " + channel.getName() + " at this time.");
-                return false;
-            }
-            case MUTED: {
-                player.sendMessage(ChatColor.RED + "You were muted from this channel!");
-                return false;
-            }
-            case ALLOWED: {
-                return true;
+    public String getOrStripColor(StandardChatter sender, StandardChannel channel, String message) {
+        Pattern pattern = Pattern.compile("(?i)(&)([0-9a-fk-or])");
+        Matcher match = pattern.matcher(message);
+        StringBuffer sb = new StringBuffer();
+        while (match.find()) {
+            if (sender.hasPermissionToColor(channel)) {
+                match.appendReplacement(sb, ChatColor.getByChar(match.group(2).toLowerCase()).toString());
+            } else {
+                match.appendReplacement(sb, "");
             }
         }
-        player.sendMessage(ChatColor.RED + "An unknown state has occured.");
-        throw new IllegalStateException("End of Switch");
+        return match.appendTail(sb).toString();
+    }
+
+    /**
+     * Sends a chat message with the player's default channel being the destination
+     * 
+     * @param player
+     * @param message
+     * @param asynchronous
+     */
+    public void handle(Player player, String message, boolean asynchronous) {
+        Optional<StandardChatter> chatter = chatterManager.getChatter(player);
+        if (chatter.isPresent())
+            handle(chatter.get(), chatter.get().getActiveChannel(), message, asynchronous);
+        else
+            player.sendMessage("Please wait until you are fully logged in to chat.");
+    }
+
+    public void handle(StandardChatter chatter, Channel channel, String message, boolean asynchronous) {
+        if (channel == null) {
+            chatter.sendMessage(ChatColor.LIGHT_PURPLE + "You aren't currently focused in a channel.");
+            return;
+        }
+        if (channel instanceof PrivateChannel)
+            handlePM(chatter, (PrivateChannel) channel, message, asynchronous);
+        else
+            handleChat(chatter, (StandardChannel) channel, message, asynchronous);
+    }
+
+    public void handleChat(StandardChatter chatter, StandardChannel channel, String message, boolean asynchronous) {
+        if (ChatPlugin.isNull(message))
+            return;
+        ChannelChatEvent event = new ChannelChatEvent(chatter, channel, ChatResult.ALLOWED, message, channel.getFormat(), asynchronous);
+        Bukkit.getPluginManager().callEvent(event);
+        if (!checkEventResult(event.getResult(), chatter, channel))
+            return;
+        message = event.getMessage();
+        message = getOrStripColor(chatter, channel, message);
+        message = formatMessage(channel, chatter.getPlayer(), event.getFormat(), message);
+        channel.sendChatMessage(chatter, message);
+    }
+
+    public void handlePM(Chatter sender, PrivateChannel channel, String message, boolean asynchronous) {
+        if (ChatPlugin.isNull(message))
+            return;
+        ChannelPrivateMessageEvent event = new ChannelPrivateMessageEvent(sender, channel, ChatResult.ALLOWED, message, asynchronous);
+        Bukkit.getPluginManager().callEvent(event);
+        if (!checkPMResult(event.getResult(), sender))
+            return;
+        channel.sendChatMessage(sender, message);
+        channel.getTarget().setLastChatter(sender);
+        socialSpy(sender, channel, message);
+    }
+
+    private void socialSpy(Chatter sender, PrivateChannel channel, String message) {
+        for (Chatter c : chatterManager.getChatters()) {
+            if (c.hasPermissionToSocialSpy()) {
+                c.sendMessage(channel.formatPrivateLogMessage(sender, message));
+            }
+        }
     }
 }

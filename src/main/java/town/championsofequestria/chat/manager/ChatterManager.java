@@ -13,12 +13,28 @@ import town.championsofequestria.chat.api.StandardChatter;
 
 public class ChatterManager {
 
-    private YAMLChatterManager yamlManager;
-    private HashMap<Player, StandardChatter> chattersMap = new HashMap<Player, StandardChatter>(0);
     private ArrayList<StandardChatter> chatters = new ArrayList<StandardChatter>(0);
+    private HashMap<Player, StandardChatter> chattersMap = new HashMap<Player, StandardChatter>(0);
+    private YAMLChatterManager yamlManager;
 
     public ChatterManager(YAMLChatterManager yamlManager) {
         this.yamlManager = Objects.requireNonNull(yamlManager);
+    }
+
+    public Optional<StandardChatter> getChatter(Player player) {
+        return Optional.ofNullable(chattersMap.get(player));
+    }
+
+    public Optional<StandardChatter> getChatter(String player) {
+        for (StandardChatter chatter : chatters) {
+            if (chatter.getPlayer().getName().equalsIgnoreCase(player))
+                return Optional.of(chatter);
+        }
+        return Optional.empty();
+    }
+
+    public ArrayList<Chatter> getChatters() {
+        return new ArrayList<Chatter>(chatters);
     }
 
     /**
@@ -35,29 +51,13 @@ public class ChatterManager {
         return chatter;
     }
 
-    public Optional<StandardChatter> getChatter(Player player) {
-        return Optional.ofNullable(chattersMap.get(player));
-    }
-
-    public Optional<StandardChatter> getChatter(String player) {
-        for (StandardChatter chatter : chatters) {
-            if (chatter.getPlayer().getName().equalsIgnoreCase(player))
-                return Optional.of(chatter);
-        }
-        return Optional.empty();
+    public void saveChatter(StandardChatter chatter) {
+        yamlManager.save(chatter);
     }
 
     public void unloadChatter(Player player) {
         StandardChatter chatter = chattersMap.remove(player);
         chatters.remove(chatter);
         yamlManager.save(chatter);
-    }
-
-    public void saveChatter(StandardChatter chatter) {
-        yamlManager.save(chatter);
-    }
-
-    public ArrayList<Chatter> getChatters() {
-        return new ArrayList<Chatter>(chatters);
     }
 }

@@ -24,9 +24,9 @@ import town.championsofequestria.chat.manager.ChatterManager;
 
 public class EventListener implements Listener {
 
-    private MessageHandler messageHandler;
     private ChannelManager channelManager;
     private ChatterManager chatterManager;
+    private MessageHandler messageHandler;
 
     public EventListener(MessageHandler messageHandler, ChannelManager channelManager, ChatterManager chatterManager) {
         this.messageHandler = Objects.requireNonNull(messageHandler);
@@ -38,43 +38,6 @@ public class EventListener implements Listener {
     public void onPlayerAsyncEvent(final AsyncPlayerChatEvent event) {
         event.setCancelled(true);
         messageHandler.handle(event.getPlayer(), event.getMessage(), event.isAsynchronous());
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerPrivateMessageEvent(final ChannelPrivateMessageEvent event) {
-        PrivateChannel channel = (PrivateChannel) event.getChannel();
-        if (!event.getChatter().hasPermissionToPM()) {
-            event.setResult(ChatResult.NO_PERMISSION);
-        }
-        if (channel.isMuted(event.getChatter())) {
-            event.setResult(ChatResult.MUTED);
-            return;
-        }
-        if(!channel.getTarget().isOnline()) {
-            event.setResult(ChatResult.NO_SUCH_CHANNEL);
-            return;
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerChatEvent(final ChannelChatEvent event) {
-        StandardChannel channel = (StandardChannel) event.getChannel();
-        if (!channelManager.hasChannel(channel)) {
-            event.setResult(ChatResult.NO_SUCH_CHANNEL);
-            return;
-        }
-        if (channel.isPerWorld() && !event.getChatter().isInWorld(channel.getWorlds())) {
-            event.setResult(ChatResult.NO_SUCH_CHANNEL);
-            return;
-        }
-        if (!event.getChatter().hasPermissionToSpeak(event.getChannel())) {
-            event.setResult(ChatResult.NO_PERMISSION);
-            return;
-        }
-        if (event.getChannel().isMuted(event.getChatter())) {
-            event.setResult(ChatResult.MUTED);
-            return;
-        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -109,6 +72,27 @@ public class EventListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerChatEvent(final ChannelChatEvent event) {
+        StandardChannel channel = (StandardChannel) event.getChannel();
+        if (!channelManager.hasChannel(channel)) {
+            event.setResult(ChatResult.NO_SUCH_CHANNEL);
+            return;
+        }
+        if (channel.isPerWorld() && !event.getChatter().isInWorld(channel.getWorlds())) {
+            event.setResult(ChatResult.NO_SUCH_CHANNEL);
+            return;
+        }
+        if (!event.getChatter().hasPermissionToSpeak(event.getChannel())) {
+            event.setResult(ChatResult.NO_PERMISSION);
+            return;
+        }
+        if (event.getChannel().isMuted(event.getChatter())) {
+            event.setResult(ChatResult.MUTED);
+            return;
+        }
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoinEvent(final PlayerJoinEvent event) {
         StandardChatter chatter = chatterManager.loadChatter(event.getPlayer(), ((CraftPlayer) event.getPlayer()).getHandle());
@@ -120,6 +104,11 @@ public class EventListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerKickEvent(final PlayerKickEvent event) {
+        chatterManager.unloadChatter(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLeaveEvent(final PlayerQuitEvent event) {
         if (event.getPlayer() == null) {
             ChatPlugin.getPlugin().getLogger().info("A PlayerQuitEvent was fired with the player being null!");
@@ -128,8 +117,19 @@ public class EventListener implements Listener {
         chatterManager.unloadChatter(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerKickEvent(final PlayerKickEvent event) {
-        chatterManager.unloadChatter(event.getPlayer());
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerPrivateMessageEvent(final ChannelPrivateMessageEvent event) {
+        PrivateChannel channel = (PrivateChannel) event.getChannel();
+        if (!event.getChatter().hasPermissionToPM()) {
+            event.setResult(ChatResult.NO_PERMISSION);
+        }
+        if (channel.isMuted(event.getChatter())) {
+            event.setResult(ChatResult.MUTED);
+            return;
+        }
+        if (!channel.getTarget().isOnline()) {
+            event.setResult(ChatResult.NO_SUCH_CHANNEL);
+            return;
+        }
     }
 }

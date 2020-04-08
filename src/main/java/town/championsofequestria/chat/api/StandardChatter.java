@@ -14,11 +14,11 @@ import town.championsofequestria.chat.ChatPlugin;
 
 public class StandardChatter extends Chatter {
 
-    private EntityPlayer entityPlayer;
-    private Player player;
-    private ArrayList<StandardChannel> channels;
     private Channel activeChannel;
+    private ArrayList<StandardChannel> channels;
+    private EntityPlayer entityPlayer;
     private ArrayList<UUID> ignores;
+    private Player player;
 
     public StandardChatter(EntityPlayer entityPlayer, Player player, Channel activeChannel, ArrayList<StandardChannel> channels2, ArrayList<UUID> ignores) {
         this.player = player;
@@ -29,12 +29,98 @@ public class StandardChatter extends Chatter {
     }
 
     @Override
+    public void addChannel(StandardChannel channel) {
+        channels.add(channel);
+        channel.announceJoinMessage(this);
+        save();
+    }
+
+    @Override
+    public void addIgnore(StandardChatter target) {
+        ignores.add(target.getPlayer().getUniqueId());
+        save();
+    }
+
+    @Override
     public Channel getActiveChannel() {
         return activeChannel;
     }
 
-    public boolean isInWorld(World world) {
-        return player.getWorld().equals(world);
+    @Override
+    public ArrayList<StandardChannel> getChannels() {
+        return channels;
+    }
+
+    public ArrayList<UUID> getIgnores() {
+        return ignores;
+    }
+
+    @Override
+    public String getName() {
+        return player.getName();
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public UUID getUUID() {
+        return player.getUniqueId();
+    }
+
+    @Override
+    public boolean hasChannel(StandardChannel channel) {
+        return channels.contains(channel);
+    }
+
+    @Override
+    public boolean hasPermissionToColor(Channel channel) {
+        return player.hasPermission("brohoofchat.color." + channel.getName());
+    }
+
+    @Override
+    public boolean hasPermissionToEmote(Channel channel) {
+        return player.hasPermission("brohoofchat.emote." + channel.getName());
+    }
+
+    @Override
+    public boolean hasPermissionToJoin(Channel channel) {
+        return player.hasPermission("brohoofchat.join." + channel.getName());
+    }
+
+    @Override
+    public boolean hasPermissionToLeave(Channel channel) {
+        return player.hasPermission("brohoofchat.leave." + channel.getName());
+    }
+
+    @Override
+    public boolean hasPermissionToPM() {
+        return player.hasPermission("brohoofchat.commands.pm");
+    }
+
+    @Override
+    public boolean hasPermissionToSocialSpy() {
+        return player.hasPermission("brohoofchat.socialspy");
+    }
+
+    @Override
+    public boolean hasPermissionToSpeak(Channel channel) {
+        return player.hasPermission("brohoofchat.speak." + channel.getName());
+    }
+
+    @Override
+    public boolean isIgnoring(Chatter sender) {
+        if (!(sender instanceof StandardChatter))
+            return false;
+        return ignores.contains(((StandardChatter) sender).getPlayer().getUniqueId());
+    }
+
+    @Override
+    public boolean isInRange(Chatter chatter, int distance) {
+        if (!(chatter instanceof StandardChatter))
+            return false;
+        Player otherPlayer = ((StandardChatter) chatter).getPlayer();
+        return !player.getWorld().equals(otherPlayer.getWorld()) ? false : player.getLocation().distanceSquared(otherPlayer.getLocation()) <= distance * distance;
     }
 
     @Override
@@ -49,119 +135,27 @@ public class StandardChatter extends Chatter {
         return result;
     }
 
-    @Override
-    public ArrayList<StandardChannel> getChannels() {
-        return channels;
+    public boolean isInWorld(StandardChatter other) {
+        return player.getWorld().equals(other.getPlayer().getWorld());
+    }
+
+    public boolean isInWorld(World world) {
+        return player.getWorld().equals(world);
     }
 
     @Override
-    public boolean hasChannel(StandardChannel channel) {
-        return channels.contains(channel);
-    }
-
-    @Override
-    public void addChannel(StandardChannel channel) {
-        channels.add(channel);
-        channel.announceJoinMessage(this);
-        save();
-    }
-
-    @Override
-    public String getName() {
-        return player.getName();
-    }
-
-    @Override
-    public void removeChannel(StandardChannel channel) {
-        channels.remove(channel);
-        save();
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public UUID getUUID() {
-        return player.getUniqueId();
-    }
-
-    @Override
-    public void sendMessage(String message) {
-        sendMessage(CraftChatMessage.fromString(message));
-    }
-
-    private void sendMessage(IChatBaseComponent[] iChatBaseComponent) {
-        entityPlayer.sendMessage(iChatBaseComponent);
-    }
-
-    @Override
-    public boolean hasPermissionToPM() {
-        return player.hasPermission("brohoofchat.commands.pm");
-    }
-
-    @Override
-    public boolean hasPermissionToJoin(Channel channel) {
-        return player.hasPermission("brohoofchat.join." + channel.getName());
-    }
-
-    @Override
-    public boolean hasPermissionToSpeak(Channel channel) {
-        return player.hasPermission("brohoofchat.speak." + channel.getName());
-    }
-
-    @Override
-    public boolean hasPermissionToLeave(Channel channel) {
-        return player.hasPermission("brohoofchat.leave." + channel.getName());
-    }
-
-    @Override
-    public boolean hasPermissionToColor(Channel channel) {
-        return player.hasPermission("brohoofchat.color." + channel.getName());
-    }
-
-    @Override
-    public boolean hasPermissionToEmote(Channel channel) {
-        return player.hasPermission("brohoofchat.emote." + channel.getName());
+    public boolean isOnline() {
+        return player.isOnline();
     }
 
     @Override
     public boolean mustForceJoin(Channel channel) {
         return player.hasPermission("brohoofchat.forcejoin." + channel.getName());
     }
-    
-    @Override
-    public boolean hasPermissionToSocialSpy() {
-        return player.hasPermission("brohoofchat.socialspy");
-    }
 
     @Override
-    public boolean isInRange(Chatter chatter, int distance) {
-        if (!(chatter instanceof StandardChatter))
-            return false;
-        Player otherPlayer = ((StandardChatter) chatter).getPlayer();
-        return !player.getWorld().equals(otherPlayer.getWorld()) ? false : player.getLocation().distanceSquared(otherPlayer.getLocation()) <= distance * distance;
-    }
-
-    public boolean isInWorld(StandardChatter other) {
-        return player.getWorld().equals(other.getPlayer().getWorld());
-    }
-
-    @Override
-    public boolean isIgnoring(Chatter sender) {
-        if (!(sender instanceof StandardChatter))
-            return false;
-        return ignores.contains(((StandardChatter) sender).getPlayer().getUniqueId());
-    }
-
-    @Override
-    public void setCurrentChannel(Channel privateChannel) {
-        this.activeChannel = privateChannel;
-        save();
-    }
-
-    @Override
-    public void addIgnore(StandardChatter target) {
-        ignores.add(target.getPlayer().getUniqueId());
+    public void removeChannel(StandardChannel channel) {
+        channels.remove(channel);
         save();
     }
 
@@ -175,17 +169,23 @@ public class StandardChatter extends Chatter {
         ChatPlugin.getPlugin().getChatterManager().saveChatter(this);
     }
 
-    public ArrayList<UUID> getIgnores() {
-        return ignores;
+    private void sendMessage(IChatBaseComponent[] iChatBaseComponent) {
+        entityPlayer.sendMessage(iChatBaseComponent);
+    }
+
+    @Override
+    public void sendMessage(String message) {
+        sendMessage(CraftChatMessage.fromString(message));
+    }
+
+    @Override
+    public void setCurrentChannel(Channel privateChannel) {
+        this.activeChannel = privateChannel;
+        save();
     }
 
     @Override
     public void setLastChatter(Chatter c) {
         this.lastReceivedMessageFrom = Objects.requireNonNull(c);
-    }
-
-    @Override
-    public boolean isOnline() {
-        return player.isOnline();
     }
 }

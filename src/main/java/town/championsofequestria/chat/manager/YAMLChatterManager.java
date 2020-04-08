@@ -29,6 +29,25 @@ public class YAMLChatterManager {
         this.settings = Objects.requireNonNull(settings);
     }
 
+    private ArrayList<String> channelToString(ArrayList<StandardChannel> arrayList) {
+        ArrayList<String> names = new ArrayList<String>(arrayList.size());
+        for (StandardChannel c : arrayList)
+            names.add(c.getName());
+        return names;
+    }
+
+    private Optional<YamlConfiguration> getConfig(File file) {
+        try {
+            YamlConfiguration config = new YamlConfiguration();
+            config.load(file);
+            return Optional.of(config);
+        } catch (IOException | InvalidConfigurationException e) {
+            if (e instanceof FileNotFoundException)
+                return Optional.empty();
+            throw new RuntimeException(e);
+        }
+    }
+
     public StandardChatter load(Player player, EntityPlayer entityPlayer) {
         Optional<YamlConfiguration> oConfig = getConfig(new File(channelFolder, player.getUniqueId().toString() + ".yml"));
         if (!oConfig.isPresent()) {
@@ -73,25 +92,6 @@ public class YAMLChatterManager {
             config.save(file);
             config.set("ignores", chatter.getIgnores());
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private ArrayList<String> channelToString(ArrayList<StandardChannel> arrayList) {
-        ArrayList<String> names = new ArrayList<String>(arrayList.size());
-        for (StandardChannel c : arrayList)
-            names.add(c.getName());
-        return names;
-    }
-
-    private Optional<YamlConfiguration> getConfig(File file) {
-        try {
-            YamlConfiguration config = new YamlConfiguration();
-            config.load(file);
-            return Optional.of(config);
-        } catch (IOException | InvalidConfigurationException e) {
-            if (e instanceof FileNotFoundException)
-                return Optional.empty();
             throw new RuntimeException(e);
         }
     }

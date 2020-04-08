@@ -9,9 +9,14 @@ import town.championsofequestria.chat.api.StandardChannel;
 public class ChannelChatEvent extends ChannelEvent {
 
     private static final HandlerList handlers = new HandlerList();
-    private ChatResult result;
-    private String message;
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     private String format;
+    private String message;
+    private ChatResult result;
 
     public ChannelChatEvent(StandardChatter sender, StandardChannel channel, ChatResult result, String message, String channelFormat, boolean async) {
         super(sender, channel, async);
@@ -20,12 +25,12 @@ public class ChannelChatEvent extends ChannelEvent {
         this.format = channelFormat;
     }
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
+    public String getFormat() {
+        return format;
     }
 
-    public static HandlerList getHandlerList() {
+    @Override
+    public HandlerList getHandlers() {
         return handlers;
     }
 
@@ -33,20 +38,16 @@ public class ChannelChatEvent extends ChannelEvent {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getFormat() {
-        return format;
+    public ChatResult getResult() {
+        return result;
     }
 
     public void setFormat(String format) {
         this.format = format;
     }
 
-    public ChatResult getResult() {
-        return result;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public void setResult(ChatResult result) {

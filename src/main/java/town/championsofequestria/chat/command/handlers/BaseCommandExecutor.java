@@ -10,9 +10,9 @@ import town.championsofequestria.chat.manager.ChatterManager;
 
 public abstract class BaseCommandExecutor implements CommandExecutor {
 
-    protected ChatPlugin plugin;
     protected ChannelManager channelManager;
     protected ChatterManager chatterManager;
+    protected ChatPlugin plugin;
 
     public BaseCommandExecutor(ChatPlugin plugin, ChannelManager channelManager, ChatterManager chatterManager) {
         this.plugin = plugin;

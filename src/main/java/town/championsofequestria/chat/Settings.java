@@ -9,18 +9,42 @@ import town.championsofequestria.chat.api.StandardChannel;
 
 public class Settings {
 
-    private ChatPlugin plugin;
     private FileConfiguration config;
-    private String defaultChannelName;
-    private String defaultFormat;
     private String defaultAnnounceFormat;
+    private String defaultChannelName;
     private String defaultEmote;
+    private String defaultFormat;
+    private ChatPlugin plugin;
     private String privateMessage;
 
     public Settings(final ChatPlugin plugin) {
         this.plugin = Objects.requireNonNull(plugin);
         config = Objects.requireNonNull(plugin.getConfig());
         readSettings();
+    }
+
+    public String getDefaultAnnounceFormat() {
+        return defaultAnnounceFormat;
+    }
+
+    public StandardChannel getDefaultChannel() {
+        return plugin.getChannelManager().getChannel(defaultChannelName).get();
+    }
+
+    public String getDefaultChannelName() {
+        return defaultChannelName;
+    }
+
+    public String getDefaultEmoteFormat() {
+        return defaultEmote;
+    }
+
+    public String getDefaultFormat() {
+        return defaultFormat;
+    }
+
+    public String getPrivateMessageFormat() {
+        return privateMessage;
     }
 
     protected void readSettings() {
@@ -35,29 +59,5 @@ public class Settings {
         plugin.reloadConfig();
         config = plugin.getConfig();
         readSettings();
-    }
-
-    public String getDefaultChannelName() {
-        return defaultChannelName;
-    }
-
-    public StandardChannel getDefaultChannel() {
-        return plugin.getChannelManager().getChannel(defaultChannelName).get();
-    }
-
-    public String getDefaultFormat() {
-        return defaultFormat;
-    }
-
-    public String getDefaultAnnounceFormat() {
-        return defaultAnnounceFormat;
-    }
-
-    public String getDefaultEmoteFormat() {
-        return defaultEmote;
-    }
-
-    public String getPrivateMessageFormat() {
-        return privateMessage;
     }
 }

@@ -14,8 +14,8 @@ import me.lucko.commodore.file.CommodoreFileFormat;
 
 class Brigadier {
 
-    private ChatPlugin plugin;
     private Commodore commodore;
+    private ChatPlugin plugin;
 
     Brigadier(ChatPlugin plugin) {
         this.plugin = Objects.requireNonNull(plugin);

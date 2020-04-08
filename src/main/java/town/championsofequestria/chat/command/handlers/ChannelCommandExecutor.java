@@ -35,9 +35,9 @@ public class ChannelCommandExecutor extends BaseCommandExecutor {
     private JoinCommand joinCommand;
     private KickCommand kickCommand;
     private LeaveCommand leaveCommand;
+    private ListCommand listCommand;
     private MuteCommand muteCommand;
     private QuickMessageCommand qmCommand;
-    private ListCommand listCommand;
     private WhoCommand whoCommand;
 
     public ChannelCommandExecutor(ChatPlugin plugin, ChannelManager channelManager, ChatterManager chatterManager) {

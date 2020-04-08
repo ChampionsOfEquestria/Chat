@@ -23,41 +23,12 @@ public class YAMLChannelManager {
         this.channelFolder = Objects.requireNonNull(channelFolder);
     }
 
-    public ArrayList<StandardChannel> loadChannels() {
-        ArrayList<StandardChannel> channels = new ArrayList<StandardChannel>(0);
-        for (String file : channelFolder.list()) {
-            channels.add(load(file.substring(0, file.lastIndexOf(46))));
-        }
-        return channels;
-    }
-
-    public StandardChannel load(String name) {
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(channelFolder, name + ".yml"));
-        String format = ChatColor.translateAlternateColorCodes('&', config.getString("format")).replace("&r", ChatColor.RESET.toString());
-        ArrayList<World> worlds = getWorlds(config);
-        int local = config.getInt("local");
-        ChatColor color = ChatColor.valueOf(config.getString("color"));
-        String qmCommand = config.getString("quick-message-command");
-        ArrayList<UUID> muted = getMuted(config);
-        if (format.equals("{default}"))
-            format = ChatPlugin.getPlugin().getSettings().getDefaultFormat();
-        return new StandardChannel(name, qmCommand, muted, color, format, worlds, local);
-    }
-
-    public void save(StandardChannel channel) {
-        try {
-            File file = new File(channelFolder, channel.getName() + ".yml");
-            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-            config.set("format", channel.getFormat());
-            config.set("worlds", channel.getWorldNames());
-            config.set("local", channel.getLocalDistance());
-            config.set("color", channel.getColor().name());
-            config.set("quick-message-command", channel.getQuickMessageCommand());
-            config.set("muted", channel.getMuteNames());
-            config.save(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private ArrayList<UUID> getMuted(YamlConfiguration config) {
+        ArrayList<String> uuidStrings = (ArrayList<String>) config.getStringList("muted");
+        ArrayList<UUID> muted = new ArrayList<UUID>(uuidStrings.size());
+        for (String uuid : uuidStrings)
+            muted.add(UUID.fromString(uuid));
+        return muted;
     }
 
     private ArrayList<World> getWorlds(YamlConfiguration config) {
@@ -74,11 +45,40 @@ public class YAMLChannelManager {
         return worlds;
     }
 
-    private ArrayList<UUID> getMuted(YamlConfiguration config) {
-        ArrayList<String> uuidStrings = (ArrayList<String>) config.getStringList("muted");
-        ArrayList<UUID> muted = new ArrayList<UUID>(uuidStrings.size());
-        for (String uuid : uuidStrings)
-            muted.add(UUID.fromString(uuid));
-        return muted;
+    public StandardChannel load(String name) {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(channelFolder, name + ".yml"));
+        String format = ChatColor.translateAlternateColorCodes('&', config.getString("format")).replace("&r", ChatColor.RESET.toString());
+        ArrayList<World> worlds = getWorlds(config);
+        int local = config.getInt("local");
+        ChatColor color = ChatColor.valueOf(config.getString("color"));
+        String qmCommand = config.getString("quick-message-command");
+        ArrayList<UUID> muted = getMuted(config);
+        if (format.equals("{default}"))
+            format = ChatPlugin.getPlugin().getSettings().getDefaultFormat();
+        return new StandardChannel(name, qmCommand, muted, color, format, worlds, local);
+    }
+
+    public ArrayList<StandardChannel> loadChannels() {
+        ArrayList<StandardChannel> channels = new ArrayList<StandardChannel>(0);
+        for (String file : channelFolder.list()) {
+            channels.add(load(file.substring(0, file.lastIndexOf(46))));
+        }
+        return channels;
+    }
+
+    public void save(StandardChannel channel) {
+        try {
+            File file = new File(channelFolder, channel.getName() + ".yml");
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            config.set("format", channel.getFormat());
+            config.set("worlds", channel.getWorldNames());
+            config.set("local", channel.getLocalDistance());
+            config.set("color", channel.getColor().name());
+            config.set("quick-message-command", channel.getQuickMessageCommand());
+            config.set("muted", channel.getMuteNames());
+            config.save(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

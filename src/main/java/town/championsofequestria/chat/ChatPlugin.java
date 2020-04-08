@@ -21,17 +21,73 @@ import town.championsofequestria.chat.manager.YAMLChatterManager;
 
 public class ChatPlugin extends JavaPlugin {
 
-    private Settings settings;
-    private EventListener listener;
-    private MessageHandler messageHandler;
-    private YAMLChannelManager yamlChannelManager;
+    public static final ConsoleChatter consoleChatter = new ConsoleChatter();
+    private static ChatPlugin plugin;
+
+    public static ChatPlugin getPlugin() {
+        return plugin;
+    }
+
+    public static boolean isNull(String string) {
+        if (string == null || string.trim().isEmpty())
+            return true;
+        return false;
+    }
+
+    private Brigadier brigadier;
     private ChannelManager channelManager;
     private ChatterManager chatterManager;
     private DedicatedServer dedicatedServer;
+    private EventListener listener;
+    private MessageHandler messageHandler;
+    private Settings settings;
+    private YAMLChannelManager yamlChannelManager;
     private YAMLChatterManager yamlChatterManager;
-    private Brigadier brigadier;
-    private static ChatPlugin plugin;
-    public static final ConsoleChatter consoleChatter = new ConsoleChatter();
+
+    public ChannelManager getChannelManager() {
+        return channelManager;
+    }
+
+    public ChatterManager getChatterManager() {
+        return chatterManager;
+    }
+
+    public DedicatedServer getDedicatedServer() {
+        return dedicatedServer;
+    }
+
+    public MessageHandler getMessageHandler() {
+        return messageHandler;
+    }
+
+    /**
+     * @return the settings
+     */
+    public Settings getSettings() {
+        return settings;
+    }
+
+    private void loadChannels() {
+        File channelFolder = new File(getDataFolder(), "channels");
+        channelFolder.mkdirs();
+        yamlChannelManager = new YAMLChannelManager(channelFolder);
+    }
+
+    private void loadChatters() {
+        File chatterFolder = new File(getDataFolder(), "chatters");
+        chatterFolder.mkdirs();
+        yamlChatterManager = new YAMLChatterManager(chatterFolder, channelManager, settings);
+    }
+
+    public void logChat(String message) {
+        Bukkit.getConsoleSender().sendMessage(message);
+    }
+
+    @Override
+    public void onDisable() {
+        for (Chatter c : chatterManager.getChatters())
+            yamlChatterManager.save((StandardChatter) c);
+    }
 
     /**
      * {@inheritDoc}
@@ -56,65 +112,10 @@ public class ChatPlugin extends JavaPlugin {
         getCommand("me").setExecutor(new MeCommandExecutor(this, channelManager, chatterManager));
     }
 
-    @Override
-    public void onDisable() {
-        for (Chatter c : chatterManager.getChatters())
-            yamlChatterManager.save((StandardChatter) c);
-    }
-
     private void registerCommands() {
         brigadier = new Brigadier(this);
         brigadier.register(getCommand("ch"));
         brigadier.register(getCommand("ignore"));
         brigadier.register(getCommand("pm"));
-    }
-
-    private void loadChannels() {
-        File channelFolder = new File(getDataFolder(), "channels");
-        channelFolder.mkdirs();
-        yamlChannelManager = new YAMLChannelManager(channelFolder);
-    }
-
-    private void loadChatters() {
-        File chatterFolder = new File(getDataFolder(), "chatters");
-        chatterFolder.mkdirs();
-        yamlChatterManager = new YAMLChatterManager(chatterFolder, channelManager, settings);
-    }
-
-    public static ChatPlugin getPlugin() {
-        return plugin;
-    }
-
-    public static boolean isNull(String string) {
-        if (string == null || string.trim().isEmpty())
-            return true;
-        return false;
-    }
-
-    /**
-     * @return the settings
-     */
-    public Settings getSettings() {
-        return settings;
-    }
-
-    public void logChat(String message) {
-        Bukkit.getConsoleSender().sendMessage(message);
-    }
-
-    public DedicatedServer getDedicatedServer() {
-        return dedicatedServer;
-    }
-
-    public ChannelManager getChannelManager() {
-        return channelManager;
-    }
-
-    public ChatterManager getChatterManager() {
-        return chatterManager;
-    }
-
-    public MessageHandler getMessageHandler() {
-        return messageHandler;
     }
 }

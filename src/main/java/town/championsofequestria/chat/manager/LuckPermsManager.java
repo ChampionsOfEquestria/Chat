@@ -23,14 +23,6 @@ public class LuckPermsManager {
         }
     }
 
-    public String getPlayerPrefix(Player player) {
-        return this.getPlayerPrefix(this.getMetaData(player.getUniqueId()), 6);
-    }
-
-    public String getPlayerSuffix(Player player) {
-        return this.getPlayerSuffix(this.getMetaData(player.getUniqueId()), 6);
-    }
-
     public String getGroupPrefix(Player player) {
         String prefix = "";
         for (int i = 5; i > 0; i--) {
@@ -51,10 +43,6 @@ public class LuckPermsManager {
         return suffix;
     }
 
-    public String getPrimaryGroup(Player player) {
-        return provider.getUserManager().getUser(player.getUniqueId()).getPrimaryGroup();
-    }
-
     private CachedMetaData getMetaData(UUID playerUUID) {
         User user = provider.getUserManager().getUser(playerUUID);
         ContextManager contextManager = provider.getContextManager();
@@ -66,8 +54,20 @@ public class LuckPermsManager {
         return prefix != null ? prefix : "";
     }
 
+    public String getPlayerPrefix(Player player) {
+        return this.getPlayerPrefix(this.getMetaData(player.getUniqueId()), 6);
+    }
+
     private String getPlayerSuffix(CachedMetaData data, int priority) {
         String suffix = data.getSuffixes().get(priority);
         return suffix != null ? suffix : "";
+    }
+
+    public String getPlayerSuffix(Player player) {
+        return this.getPlayerSuffix(this.getMetaData(player.getUniqueId()), 6);
+    }
+
+    public String getPrimaryGroup(Player player) {
+        return provider.getUserManager().getUser(player.getUniqueId()).getPrimaryGroup();
     }
 }

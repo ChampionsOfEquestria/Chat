@@ -15,22 +15,6 @@ public class PrivateChannel extends Channel {
         this.target.add(target);
     }
 
-    @Override
-    public void sendChatMessage(Chatter sender, String message) {
-        sender.sendMessage(formatPrivateToMessage(message));
-        sendChannelMessage(target, formatPrivateFromMessage(sender, message));
-        this.logChat(formatPrivateLogMessage(sender, message));
-    }
-
-    @Override
-    protected void sendChannelMessage(ArrayList<Chatter> recipents, String message) {
-        recipents.forEach((chatter) -> chatter.sendMessage(message));
-    }
-
-    public String formatPrivateToMessage(String message) {
-        return ChatPlugin.getPlugin().getSettings().getPrivateMessageFormat().replace("{convoaddress}", "To").replace("{convopartner}", getTargetName()).replace("{msg}", message);
-    }
-
     public String formatPrivateFromMessage(Chatter sender, String message) {
         return ChatPlugin.getPlugin().getSettings().getPrivateMessageFormat().replace("{convoaddress}", "From").replace("{convopartner}", sender.getName()).replace("{msg}", message);
     }
@@ -39,12 +23,8 @@ public class PrivateChannel extends Channel {
         return ChatColor.stripColor(ChatPlugin.getPlugin().getSettings().getPrivateMessageFormat().replace("{convoaddress}", sender.getName() + " ->").replace("{convopartner}", getTargetName()).replace("{msg}", message));
     }
 
-    private String getTargetName() {
-        return getTarget().getName();
-    }
-
-    public Chatter getTarget() {
-        return target.get(0);
+    public String formatPrivateToMessage(String message) {
+        return ChatPlugin.getPlugin().getSettings().getPrivateMessageFormat().replace("{convoaddress}", "To").replace("{convopartner}", getTargetName()).replace("{msg}", message);
     }
 
     @Override
@@ -57,8 +37,28 @@ public class PrivateChannel extends Channel {
         throw new UnsupportedOperationException();
     }
 
+    public Chatter getTarget() {
+        return target.get(0);
+    }
+
+    private String getTargetName() {
+        return getTarget().getName();
+    }
+
     @Override
     public boolean isMuted(Chatter chatter) {
         return target.get(0).isIgnoring(chatter);
+    }
+
+    @Override
+    protected void sendChannelMessage(ArrayList<Chatter> recipents, String message) {
+        recipents.forEach((chatter) -> chatter.sendMessage(message));
+    }
+
+    @Override
+    public void sendChatMessage(Chatter sender, String message) {
+        sender.sendMessage(formatPrivateToMessage(message));
+        sendChannelMessage(target, formatPrivateFromMessage(sender, message));
+        this.logChat(formatPrivateLogMessage(sender, message));
     }
 }
