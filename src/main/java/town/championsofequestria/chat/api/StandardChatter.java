@@ -125,6 +125,11 @@ public class StandardChatter extends Chatter {
     public boolean mustForceJoin(Channel channel) {
         return player.hasPermission("brohoofchat.forcejoin." + channel.getName());
     }
+    
+    @Override
+    public boolean hasPermissionToSocialSpy() {
+        return player.hasPermission("brohoofchat.socialspy");
+    }
 
     public boolean isInRange(Chatter chatter, int distance) {
         if (!(chatter instanceof StandardChatter))

@@ -49,8 +49,10 @@ public abstract class Chatter {
 
     public abstract boolean hasPermissionToEmote(Channel channel);
 
+    public abstract boolean hasPermissionToSocialSpy();
+
     public abstract boolean mustForceJoin(Channel channel);
-    
+
     public Optional<Chatter> getLastChatter() {
         if (this.lastReceivedMessageFrom.isOnline())
             return Optional.of(lastReceivedMessageFrom);
@@ -66,6 +68,4 @@ public abstract class Chatter {
         }
         return false;
     }
-
-    
 }

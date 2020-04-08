@@ -95,4 +95,9 @@ public class ConsoleChatter extends Chatter {
     public boolean mustForceJoin(Channel channel) {
         return false;
     }
+
+    @Override
+    public boolean hasPermissionToSocialSpy() {
+        return false;
+    }
 }

@@ -55,11 +55,16 @@ public class MessageHandler {
             return;
         channel.sendChatMessage(sender, message);
         channel.getTarget().setLastChatter(sender);
-        // socialSpy(chatter, channel, message);
+        socialSpy(sender, channel, message);
     }
-    /*
-     * private void socialSpy(Chatter sender, PrivateChannel channel, String message) { for (Chatter c : chatterManager.getChatters()) { if (c.getPlayer().hasPermission("brohoofchat.socialspy")) { c.sendMessage(channel.formatPrivateLogMessage(sender, message)); } } }
-     */
+
+    private void socialSpy(Chatter sender, PrivateChannel channel, String message) {
+        for (Chatter c : chatterManager.getChatters()) {
+            if (c.hasPermissionToSocialSpy()) {
+                c.sendMessage(channel.formatPrivateLogMessage(sender, message));
+            }
+        }
+    }
 
     private boolean checkPMResult(ChatResult result, Chatter sender) {
         switch (result) {
