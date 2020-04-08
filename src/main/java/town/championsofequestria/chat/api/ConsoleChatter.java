@@ -32,12 +32,12 @@ public class ConsoleChatter extends Chatter {
 
     @Override
     public boolean hasChannel(StandardChannel standardChannel) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isInWorld(ArrayList<World> worlds) {
-        return false;
+        return true;
     }
 
     @Override
@@ -99,5 +99,35 @@ public class ConsoleChatter extends Chatter {
     @Override
     public boolean hasPermissionToSocialSpy() {
         return false;
+    }
+
+    @Override
+    public void addIgnore(StandardChatter target) {
+    }
+
+    @Override
+    public void removeIgnore(StandardChatter target) {
+        
+    }
+
+    @Override
+    public ArrayList<StandardChannel> getChannels() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void addChannel(StandardChannel channel) {
+
+        
+    }
+
+    @Override
+    public void removeChannel(StandardChannel channel) {
+        
+    }
+
+    @Override
+    public boolean isInRange(Chatter chatter, int distance) {
+        return true;
     }
 }

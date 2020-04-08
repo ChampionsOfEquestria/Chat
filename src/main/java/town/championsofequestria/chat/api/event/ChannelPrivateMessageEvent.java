@@ -4,7 +4,6 @@ import org.bukkit.event.HandlerList;
 
 import town.championsofequestria.chat.api.ChatResult;
 import town.championsofequestria.chat.api.Chatter;
-import town.championsofequestria.chat.api.StandardChatter;
 import town.championsofequestria.chat.api.PrivateChannel;
 
 public class ChannelPrivateMessageEvent extends ChannelEvent {

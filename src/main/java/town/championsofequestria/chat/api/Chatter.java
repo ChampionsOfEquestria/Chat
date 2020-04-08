@@ -26,6 +26,10 @@ public abstract class Chatter {
     public abstract String getName();
 
     public abstract boolean isIgnoring(Chatter chatter);
+    
+    public abstract void addIgnore(StandardChatter target);
+    
+    public abstract void removeIgnore(StandardChatter target);
 
     public abstract boolean hasChannel(StandardChannel standardChannel);
 
@@ -52,6 +56,15 @@ public abstract class Chatter {
     public abstract boolean hasPermissionToSocialSpy();
 
     public abstract boolean mustForceJoin(Channel channel);
+        
+    public abstract ArrayList<StandardChannel> getChannels();
+    
+    public abstract void addChannel(StandardChannel channel);
+    
+    public abstract void removeChannel(StandardChannel channel);
+    
+    public abstract boolean isInRange(Chatter chatter, int distance);
+    
 
     public Optional<Chatter> getLastChatter() {
         if (this.lastReceivedMessageFrom.isOnline())

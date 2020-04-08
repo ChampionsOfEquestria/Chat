@@ -4,7 +4,6 @@ import org.bukkit.event.Event;
 
 import town.championsofequestria.chat.api.Channel;
 import town.championsofequestria.chat.api.Chatter;
-import town.championsofequestria.chat.api.StandardChatter;
 
 public abstract class ChannelEvent extends Event {
 

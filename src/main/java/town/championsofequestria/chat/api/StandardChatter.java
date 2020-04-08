@@ -49,6 +49,7 @@ public class StandardChatter extends Chatter {
         return result;
     }
 
+    @Override
     public ArrayList<StandardChannel> getChannels() {
         return channels;
     }
@@ -58,6 +59,7 @@ public class StandardChatter extends Chatter {
         return channels.contains(channel);
     }
 
+    @Override
     public void addChannel(StandardChannel channel) {
         channels.add(channel);
         channel.announceJoinMessage(this);
@@ -69,6 +71,7 @@ public class StandardChatter extends Chatter {
         return player.getName();
     }
 
+    @Override
     public void removeChannel(StandardChannel channel) {
         channels.remove(channel);
         save();
@@ -131,6 +134,7 @@ public class StandardChatter extends Chatter {
         return player.hasPermission("brohoofchat.socialspy");
     }
 
+    @Override
     public boolean isInRange(Chatter chatter, int distance) {
         if (!(chatter instanceof StandardChatter))
             return false;
@@ -155,11 +159,13 @@ public class StandardChatter extends Chatter {
         save();
     }
 
+    @Override
     public void addIgnore(StandardChatter target) {
         ignores.add(target.getPlayer().getUniqueId());
         save();
     }
 
+    @Override
     public void removeIgnore(StandardChatter target) {
         ignores.remove(target.getPlayer().getUniqueId());
         save();
