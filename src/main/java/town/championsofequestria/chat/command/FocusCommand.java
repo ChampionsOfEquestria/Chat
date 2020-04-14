@@ -17,8 +17,13 @@ public class FocusCommand extends BaseCommand {
     public boolean execute(StandardChatter chatter, StandardChannel channel) {
         // They're already in that channel.
         if (chatter.hasChannel(channel)) {
-            if (chatter.getActiveChannel().equals(channel)) {
+            if(!chatter.hasPermissionToSpeak(channel)) {
+                chatter.sendMessage(ChatColor.RED + "You don't have permission to chat in " + channel.getName());
+                return true;
+            }
+            if (chatter.getActiveChannel() != null && chatter.getActiveChannel().equals(channel)) {
                 chatter.sendMessage(ChatColor.RED + "You're already chatting in " + channel.getName());
+                return true;
             }
             chatter.setCurrentChannel(channel);
             chatter.sendMessage(ChatColor.YELLOW + "Now chatting in " + channel.getName());

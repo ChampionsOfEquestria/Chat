@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_15_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
-
 import net.minecraft.server.v1_15_R1.EntityPlayer;
 import net.minecraft.server.v1_15_R1.IChatBaseComponent;
 import town.championsofequestria.chat.ChatPlugin;
@@ -19,6 +18,7 @@ public class StandardChatter extends Chatter {
     private EntityPlayer entityPlayer;
     private ArrayList<UUID> ignores;
     private Player player;
+    private UUID uuid;
 
     public StandardChatter(EntityPlayer entityPlayer, Player player, Channel activeChannel, ArrayList<StandardChannel> channels2, ArrayList<UUID> ignores) {
         this.player = player;
@@ -26,6 +26,7 @@ public class StandardChatter extends Chatter {
         this.activeChannel = activeChannel;
         this.channels = channels2;
         this.ignores = ignores;
+        this.uuid = player.getUniqueId();
     }
 
     @Override
@@ -65,7 +66,7 @@ public class StandardChatter extends Chatter {
     }
 
     public UUID getUUID() {
-        return player.getUniqueId();
+        return uuid;
     }
 
     @Override
