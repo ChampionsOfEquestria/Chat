@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.bukkit.entity.Player;
 
-import net.minecraft.server.v1_15_R1.EntityPlayer;
 import town.championsofequestria.chat.api.Chatter;
 import town.championsofequestria.chat.api.StandardChatter;
 
@@ -44,8 +43,8 @@ public class ChatterManager {
      * @param ply
      *            the player to load
      */
-    public StandardChatter loadChatter(Player player, EntityPlayer entityPlayer) {
-        StandardChatter chatter = yamlManager.load(player, entityPlayer);
+    public StandardChatter loadChatter(Player player) {
+        StandardChatter chatter = yamlManager.load(player);
         chattersMap.put(player, chatter);
         chatters.add(chatter);
         return chatter;

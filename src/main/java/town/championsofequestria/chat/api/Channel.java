@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import town.championsofequestria.chat.ChatPlugin;
+import org.bukkit.Bukkit;
 
 public abstract class Channel {
 
@@ -15,7 +15,7 @@ public abstract class Channel {
     public abstract boolean isMuted(Chatter chatter);
 
     protected void logChat(String message) {
-        ChatPlugin.getPlugin().getDedicatedServer().console.sendMessage(message);
+       Bukkit.getConsoleSender().sendMessage(message);
     }
 
     protected abstract void sendChannelMessage(ArrayList<Chatter> recipents, String message);

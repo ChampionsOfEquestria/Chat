@@ -22,14 +22,18 @@ repositories {
 		name 'vault-repo'
 		url 'https://jitpack.io'
 	}
+	maven {
+		name 'spigot'
+		url 'https://hub.spigotmc.org/nexus/content/groups/public/'
+	}
 }
 
 
 dependencies {
 	shade 'me.lucko:commodore:1.7'
 	compile 'com.github.MilkBowl:VaultAPI:1.7'
-	compile 'org.spigotmc:spigot:1.15.2'
 	compile 'net.luckperms:api:5.0'
+	compile 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
 }
 
 jar {

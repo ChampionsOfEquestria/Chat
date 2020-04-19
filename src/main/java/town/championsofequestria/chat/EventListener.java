@@ -2,7 +2,6 @@ package town.championsofequestria.chat;
 
 import java.util.Objects;
 
-import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -95,7 +94,7 @@ public class EventListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoinEvent(final PlayerJoinEvent event) {
-        StandardChatter chatter = chatterManager.loadChatter(event.getPlayer(), ((CraftPlayer) event.getPlayer()).getHandle());
+        StandardChatter chatter = chatterManager.loadChatter(event.getPlayer());
         for (StandardChannel c : channelManager.getChannels()) {
             if (chatter.mustForceJoin(c))
                 if (!chatter.hasChannel(c))
@@ -110,9 +109,11 @@ public class EventListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLeaveEvent(final PlayerQuitEvent event) {
-        if (event.getPlayer() == null) {
+        try {
+            Objects.requireNonNull(event.getPlayer());
+            Objects.requireNonNull(event.getPlayer().getUniqueId());
+        } catch (NullPointerException ex) {
             ChatPlugin.getPlugin().getLogger().info("A PlayerQuitEvent was fired with the player being null!");
-            return;
         }
         chatterManager.unloadChatter(event.getPlayer());
     }

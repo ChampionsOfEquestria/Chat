@@ -2,10 +2,8 @@ package town.championsofequestria.chat;
 
 import java.io.File;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_15_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.minecraft.server.v1_15_R1.DedicatedServer;
 import town.championsofequestria.chat.api.Chatter;
 import town.championsofequestria.chat.api.ConsoleChatter;
 import town.championsofequestria.chat.api.StandardChatter;
@@ -37,7 +35,6 @@ public class ChatPlugin extends JavaPlugin {
     private Brigadier brigadier;
     private ChannelManager channelManager;
     private ChatterManager chatterManager;
-    private DedicatedServer dedicatedServer;
     private EventListener listener;
     private MessageHandler messageHandler;
     private Settings settings;
@@ -50,10 +47,6 @@ public class ChatPlugin extends JavaPlugin {
 
     public ChatterManager getChatterManager() {
         return chatterManager;
-    }
-
-    public DedicatedServer getDedicatedServer() {
-        return dedicatedServer;
     }
 
     public MessageHandler getMessageHandler() {
@@ -95,7 +88,7 @@ public class ChatPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        dedicatedServer = ((CraftServer) Bukkit.getServer()).getServer();
+        // TODO: remove
         registerCommands();
         settings = new Settings(this);
         loadChannels();
