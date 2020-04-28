@@ -1,7 +1,7 @@
 name: CoEChat
 author: SweetieBelle
 main: town.championsofequestria.chat.ChatPlugin
-depend: [LuckPerms]
+depend: [SweetieLib]
 softdepend: [Multiverse-Core]
 version: $version
 api-version: 1.15

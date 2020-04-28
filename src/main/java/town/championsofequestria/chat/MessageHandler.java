@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.sweetiebelle.lib.LuckPermsManager;
 
 import town.championsofequestria.chat.api.Channel;
 import town.championsofequestria.chat.api.ChatResult;
@@ -18,7 +19,6 @@ import town.championsofequestria.chat.api.StandardChannel;
 import town.championsofequestria.chat.api.event.ChannelChatEvent;
 import town.championsofequestria.chat.api.event.ChannelPrivateMessageEvent;
 import town.championsofequestria.chat.manager.ChatterManager;
-import town.championsofequestria.chat.manager.LuckPermsManager;
 
 public class MessageHandler {
 
@@ -26,9 +26,9 @@ public class MessageHandler {
     private ChatterManager chatterManager;
     private LuckPermsManager lpManager;
 
-    public MessageHandler(ChatterManager chatterManager) {
+    public MessageHandler(LuckPermsManager lpManager, ChatterManager chatterManager) {
+        this.lpManager = Objects.requireNonNull(lpManager);
         this.chatterManager = Objects.requireNonNull(chatterManager);
-        this.lpManager = new LuckPermsManager();
     }
 
     private boolean checkEventResult(ChatResult result, StandardChatter player, StandardChannel channel) {
@@ -106,19 +106,19 @@ public class MessageHandler {
                 return player.isPresent() ? player.get().getWorld().getName() : "";
             }
             case "prefix": {
-                return player.isPresent() ? lpManager.getPlayerPrefix(player.get()) : "";
+                return player.isPresent() ? lpManager.getPlayerPrefix(player.get().getUniqueId()) : "";
             }
             case "suffix": {
-                return player.isPresent() ? lpManager.getPlayerSuffix(player.get()) : "";
+                return player.isPresent() ? lpManager.getPlayerSuffix(player.get().getUniqueId()) : "";
             }
             case "gprefix": {
-                return player.isPresent() ? lpManager.getGroupPrefix(player.get()) : "";
+                return player.isPresent() ? lpManager.getGroupPrefix(player.get().getUniqueId()) : "";
             }
             case "gsuffix": {
-                return player.isPresent() ? lpManager.getGroupSuffix(player.get()) : "";
+                return player.isPresent() ? lpManager.getGroupSuffix(player.get().getUniqueId()) : "";
             }
             case "group": {
-                return player.isPresent() ? lpManager.getPrimaryGroup(player.get()) : "";
+                return player.isPresent() ? lpManager.getPrimaryGroup(player.get().getUniqueId()) : "";
             }
             default : {
                 return "{" + tag + "}";

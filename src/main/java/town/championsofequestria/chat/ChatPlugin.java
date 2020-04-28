@@ -3,7 +3,8 @@ package town.championsofequestria.chat;
 import java.io.File;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-
+import org.sweetiebelle.lib.LuckPermsManager;
+import org.sweetiebelle.lib.SweetieLib;
 import town.championsofequestria.chat.api.Chatter;
 import town.championsofequestria.chat.api.ConsoleChatter;
 import town.championsofequestria.chat.api.StandardChatter;
@@ -47,6 +48,14 @@ public class ChatPlugin extends JavaPlugin {
 
     public ChatterManager getChatterManager() {
         return chatterManager;
+    }
+
+    private LuckPermsManager getLuckPerms() {
+        try {
+            return SweetieLib.getLuckPerms();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public MessageHandler getMessageHandler() {
@@ -95,7 +104,7 @@ public class ChatPlugin extends JavaPlugin {
         channelManager = new ChannelManager(yamlChannelManager.loadChannels());
         loadChatters();
         chatterManager = new ChatterManager(yamlChatterManager);
-        messageHandler = new MessageHandler(chatterManager);
+        messageHandler = new MessageHandler(getLuckPerms(), chatterManager);
         listener = new EventListener(messageHandler, channelManager, chatterManager);
         getServer().getPluginManager().registerEvents(listener, this);
         getCommand("ch").setExecutor(new ChannelCommandExecutor(this, channelManager, chatterManager));
