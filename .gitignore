@@ -64,6 +64,3 @@ local.properties
 #Gradle
 .gradle/
 build/
-
-#Copywritten files
-libs/
