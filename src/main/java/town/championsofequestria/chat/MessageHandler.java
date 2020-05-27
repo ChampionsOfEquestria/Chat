@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.sweetiebelle.lib.LuckPermsManager;
+import org.sweetiebelle.lib.permission.PermissionManager;
 
 import town.championsofequestria.chat.api.Channel;
 import town.championsofequestria.chat.api.ChatResult;
@@ -24,9 +24,9 @@ public class MessageHandler {
 
     private static final Pattern tagPattern = Pattern.compile("(\\{\\w+\\})");
     private ChatterManager chatterManager;
-    private LuckPermsManager lpManager;
+    private PermissionManager lpManager;
 
-    public MessageHandler(LuckPermsManager lpManager, ChatterManager chatterManager) {
+    public MessageHandler(PermissionManager lpManager, ChatterManager chatterManager) {
         this.lpManager = Objects.requireNonNull(lpManager);
         this.chatterManager = Objects.requireNonNull(chatterManager);
     }

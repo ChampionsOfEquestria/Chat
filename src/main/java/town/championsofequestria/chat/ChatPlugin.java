@@ -3,8 +3,9 @@ package town.championsofequestria.chat;
 import java.io.File;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.sweetiebelle.lib.LuckPermsManager;
 import org.sweetiebelle.lib.SweetieLib;
+import org.sweetiebelle.lib.permission.PermissionManager;
+
 import town.championsofequestria.chat.api.Chatter;
 import town.championsofequestria.chat.api.ConsoleChatter;
 import town.championsofequestria.chat.api.StandardChatter;
@@ -50,11 +51,13 @@ public class ChatPlugin extends JavaPlugin {
         return chatterManager;
     }
 
-    private LuckPermsManager getLuckPerms() {
+    private PermissionManager getLuckPerms() {
         try {
-            return SweetieLib.getLuckPerms();
+            return SweetieLib.getPlugin().getPermission();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            getLogger().warning("Couldn't find LuckPerms! Is it not loaded?");
+            e.printStackTrace();
+            return new DefaultPermission();
         }
     }
 
