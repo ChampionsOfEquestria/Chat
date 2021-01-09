@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'town.championsofequestria'
-version = '4'
+version = '5'
 
 configurations {
     shade
@@ -33,7 +33,7 @@ dependencies {
 	shade 'me.lucko:commodore:1.7'
 	implementation 'com.github.MilkBowl:VaultAPI:1.7'
 	implementation 'net.luckperms:api:5.0'
-	implementation 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
+	implementation 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
 	implementation fileTree(dir: 'libs', include: '*.jar')
 }
 
