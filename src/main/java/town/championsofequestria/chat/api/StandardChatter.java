@@ -21,7 +21,7 @@ public class StandardChatter extends Chatter {
         this.activeChannel = activeChannel;
         this.channels = channels2;
         this.ignores = ignores;
-        this.uuid = new UUID(uuid.getMostSignificantBits(), uuid.getLeastSignificantBits());
+        this.uuid = new UUID(player.getUniqueId().getMostSignificantBits(), player.getUniqueId().getLeastSignificantBits());
     }
 
     @Override
