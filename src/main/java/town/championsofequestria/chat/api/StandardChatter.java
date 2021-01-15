@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+
 import town.championsofequestria.chat.ChatPlugin;
 
 public class StandardChatter extends Chatter {
@@ -21,7 +22,7 @@ public class StandardChatter extends Chatter {
         this.activeChannel = activeChannel;
         this.channels = channels2;
         this.ignores = ignores;
-        this.uuid = new UUID(player.getUniqueId().getMostSignificantBits(), player.getUniqueId().getLeastSignificantBits());
+        this.uuid = player.getUniqueId();
     }
 
     @Override

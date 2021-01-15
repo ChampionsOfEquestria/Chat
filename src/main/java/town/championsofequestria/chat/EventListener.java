@@ -109,12 +109,6 @@ public class EventListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLeaveEvent(final PlayerQuitEvent event) {
-        try {
-            Objects.requireNonNull(event.getPlayer());
-            Objects.requireNonNull(event.getPlayer().getUniqueId());
-        } catch (NullPointerException ex) {
-            ChatPlugin.getPlugin().getLogger().info("A PlayerQuitEvent was fired with the player being null!");
-        }
         chatterManager.unloadChatter(event.getPlayer());
     }
 

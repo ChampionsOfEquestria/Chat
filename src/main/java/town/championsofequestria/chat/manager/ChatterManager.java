@@ -1,19 +1,19 @@
 package town.championsofequestria.chat.manager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import town.championsofequestria.chat.ChatPlugin;
 import town.championsofequestria.chat.api.Chatter;
 import town.championsofequestria.chat.api.StandardChatter;
 
 public class ChatterManager {
 
     private ArrayList<StandardChatter> chatters = new ArrayList<StandardChatter>(0);
-    private HashMap<Player, StandardChatter> chattersMap = new HashMap<Player, StandardChatter>(0);
     private YAMLChatterManager yamlManager;
 
     public ChatterManager(YAMLChatterManager yamlManager) {
@@ -21,7 +21,7 @@ public class ChatterManager {
     }
 
     public Optional<StandardChatter> getChatter(Player player) {
-        return Optional.ofNullable(chattersMap.get(player));
+        return getChatter(player.getName());
     }
 
     public Optional<StandardChatter> getChatter(String player) {
@@ -40,12 +40,10 @@ public class ChatterManager {
      * Only load chatters as needed
      * 
      * @param entityPlayer
-     * @param ply
-     *            the player to load
+     * @param ply          the player to load
      */
     public StandardChatter loadChatter(Player player) {
         StandardChatter chatter = yamlManager.load(player);
-        chattersMap.put(player, chatter);
         chatters.add(chatter);
         return chatter;
     }
@@ -55,8 +53,14 @@ public class ChatterManager {
     }
 
     public void unloadChatter(Player player) {
-        StandardChatter chatter = chattersMap.remove(player);
-        chatters.remove(chatter);
+        Optional<StandardChatter> oChatter = getChatter(player);
+        if (!oChatter.isPresent()) {
+            ChatPlugin.getPlugin().getLogger().severe(ChatColor.RED + player.getName() + " left abnormally. Not saving their chat settings.");
+            return;
+        }
+
+        StandardChatter chatter = oChatter.get();
         yamlManager.save(chatter);
+        chatters.remove(chatter);
     }
 }
