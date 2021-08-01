@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'town.championsofequestria'
-version = '5'
+version = '6'
 
 configurations {
     shade

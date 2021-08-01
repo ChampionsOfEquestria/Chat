@@ -3,8 +3,8 @@ author: SweetieBelle
 main: town.championsofequestria.chat.ChatPlugin
 depend: [SweetieLib]
 softdepend: [Multiverse-Core]
-version: ${version}
-api-version: 1.15
+version: 6
+api-version: 1.17
 description: >
             Adds Channels and PM channels.
 commands:
