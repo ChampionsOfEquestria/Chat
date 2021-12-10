@@ -90,6 +90,8 @@ public class ChatPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if(chatterManager == null)
+            return;
         for (Chatter c : chatterManager.getChatters())
             yamlChatterManager.save((StandardChatter) c);
     }
@@ -119,6 +121,8 @@ public class ChatPlugin extends JavaPlugin {
 
     private void registerCommands() {
         brigadier = new Brigadier(this);
+        if(!brigadier.isAvailable())
+            return;
         brigadier.register(getCommand("ch"));
         brigadier.register(getCommand("ignore"));
         brigadier.register(getCommand("pm"));
