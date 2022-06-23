@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.sweetiebelle.lib.permission.PermissionManager;
+import net.shonx.lib.permission.PermissionManager;
 
 import town.championsofequestria.chat.api.Channel;
 import town.championsofequestria.chat.api.ChatResult;

@@ -2,7 +2,7 @@ package town.championsofequestria.chat;
 
 import java.util.UUID;
 
-import org.sweetiebelle.lib.permission.PermissionManager;
+import net.shonx.lib.permission.PermissionManager;
 
 public class DefaultPermission implements PermissionManager {
 

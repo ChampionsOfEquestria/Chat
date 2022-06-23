@@ -3,8 +3,8 @@ package town.championsofequestria.chat;
 import java.io.File;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.sweetiebelle.lib.SweetieLib;
-import org.sweetiebelle.lib.permission.PermissionManager;
+import net.shonx.lib.SweetieLib;
+import net.shonx.lib.permission.PermissionManager;
 
 import town.championsofequestria.chat.api.Chatter;
 import town.championsofequestria.chat.api.ConsoleChatter;
